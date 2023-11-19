@@ -22,9 +22,9 @@
 
 <Card.Root class="w-full">
   <Card.Header>
-    <Card.Title tag="h3">Selecionar Material e Unidade</Card.Title>
+    <Card.Title tag="h4">Selecionar Material e Unidade</Card.Title>
     <Card.Description
-      >Esclha o material que quer comprar e a unidade de fornecimento desejada
+      >Escolha o material que quer comprar e a unidade de fornecimento desejada
       para fazer pesquisa de preços.</Card.Description
     >
   </Card.Header>

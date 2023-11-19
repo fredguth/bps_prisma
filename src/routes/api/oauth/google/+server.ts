@@ -6,6 +6,7 @@ import type { RequestHandler } from "./$types.js";
 
 export const GET: RequestHandler = async ({ cookies }) => {
   const [url, state] = await googleAuth.getAuthorizationUrl();
+  console.log("cookie setting:", url, state);
   cookies.set("google_oauth_state", state, {
     httpOnly: true,
     secure: !dev,

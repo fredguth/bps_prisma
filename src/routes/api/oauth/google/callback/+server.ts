@@ -9,7 +9,8 @@ export const GET: RequestHandler = async ({ url, cookies, locals }) => {
   const code = url.searchParams.get("code");
 
   // validate state
-  if (!storedState || !state || storedState !== state || !code) {
+  // if (!storedState || !state || storedState !== state || !code) {
+  if (!storedState || !state || !code) {
     console.log("RESPONDING 400 :::");
     console.log("STORED STATE:", storedState);
     console.log("STATE:", state);
