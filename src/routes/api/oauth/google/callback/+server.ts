@@ -10,6 +10,10 @@ export const GET: RequestHandler = async ({ url, cookies, locals }) => {
 
   // validate state
   if (!storedState || !state || storedState !== state || !code) {
+    console.log("RESPONDING 400 :::");
+    console.log("STORED STATE:", storedState);
+    console.log("STATE:", state);
+    console.log("CODE:", code);
     return new Response(null, {
       status: 400,
     });
