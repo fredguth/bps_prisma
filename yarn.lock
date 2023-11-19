@@ -1219,7 +1219,7 @@ magic-string@^0.27.0:
   dependencies:
     "@jridgewell/sourcemap-codec" "^1.4.13"
 
-magic-string@^0.30.0, magic-string@^0.30.3, magic-string@^0.30.4:
+magic-string@^0.30.0, magic-string@^0.30.3, magic-string@^0.30.4, magic-string@^0.30.5:
   version "0.30.5"
   resolved "https://registry.yarnpkg.com/magic-string/-/magic-string-0.30.5.tgz#1994d980bd1c8835dc6e78db7cbd4ae4f24746f9"
   integrity sha512-7xlpfBaQaP/T6Vh8MO/EqXSW5En6INHEvEXQiuff7Gku0PWjU3uf6w/j9o7O+SpB5fOAkrI5HeoNgwjEO0pFsA==
@@ -1665,6 +1665,20 @@ svelte-keyed@^1.1.6:
   version "1.1.7"
   resolved "https://registry.yarnpkg.com/svelte-keyed/-/svelte-keyed-1.1.7.tgz#333041befb644c188c684b1b1a252800854cdeb1"
   integrity sha512-d3VIwBza12PIQ0mXf8js+r4xoSFiQikDobbi6hx03oQzZx0BImXCBcdsZeYEN7VrNswXcjIrhc9qqjlxcro49w==
+
+svelte-parse-markup@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/svelte-parse-markup/-/svelte-parse-markup-0.1.2.tgz#768f3f3ca0fededbcfd713577e730719cd9d6af4"
+  integrity sha512-DycY7DJr7VqofiJ63ut1/NEG92HrWWL56VWITn/cJCu+LlZhMoBkBXT4opUitPEEwbq1nMQbv4vTKUfbOqIW1g==
+
+svelte-preprocess-import-assets@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/svelte-preprocess-import-assets/-/svelte-preprocess-import-assets-1.1.0.tgz#4175d608494fa909ed2f125db000a7cacd2d7f83"
+  integrity sha512-pWjoceFcGAG6vUg50JZXfhr5V4amxI2aYbcsn6CJrytcA528NNgaHnvMR1EwJYBIpZEf302I8Pyw0YeEta1zbg==
+  dependencies:
+    estree-walker "^3.0.3"
+    magic-string "^0.30.5"
+    svelte-parse-markup "^0.1.2"
 
 svelte-preprocess@^5.1.0:
   version "5.1.0"

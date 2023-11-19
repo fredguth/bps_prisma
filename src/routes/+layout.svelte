@@ -3,6 +3,7 @@
   // import { readable} from "svelte/store";
   import { page } from "$app/stores";
   import { onMount } from "svelte";
+  import img from '$lib/assets/img-logo-MS.png';
 
   // export let data;
 
@@ -40,7 +41,7 @@
 
       <img
         class="w-80 absolute right-0"
-        src="img-logo-MS.png"
+        src={img}
         alt="Logos SUS e  Ministério da saúde" />
     </div>
   </footer>

@@ -11,18 +11,18 @@ export async function GET({ url }) {
 
     const unidades = await db.material.findMany({
       select: {
-        DS_UNIDADE: true,
+        unidade: true,
       },
-      distinct: ["DS_UNIDADE"],
+      distinct: ["unidade"],
       orderBy: {
-        DS_UNIDADE: "asc",
+        unidade: "asc",
       },
       take: limit,
       skip: skip,
     });
 
     // Map the result to an array of strings
-    const unidadesStrings: string[] = unidades.map((item) => item.DS_UNIDADE);
+    const unidadesStrings: string[] = unidades.map((item) => item.unidade);
 
     return json(unidadesStrings); // Wrap the array in a Response object
   } catch (error) {

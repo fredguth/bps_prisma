@@ -10,18 +10,18 @@ export async function GET({ url }) {
 
     const classes = await db.material.findMany({
       select: {
-        DS_CLASSE: true,
+        classe: true,
       },
-      distinct: ["DS_CLASSE"],
+      distinct: ["classe"],
       orderBy: {
-        DS_CLASSE: "asc",
+        classe: "asc",
       },
       take: limit,
       skip: skip,
     });
 
     // Map the result to an array of strings
-    const classesStrings: string[] = classes.map((item) => item.DS_CLASSE);
+    const classesStrings: string[] = classes.map((item) => item.classe);
 
     return json(classesStrings); // Wrap the array in a Response object
   } catch (error) {

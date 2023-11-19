@@ -8,14 +8,73 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Compra {
+  id               Int      @id @unique @default(autoincrement())
+  data             DateTime
+  modalidade       String
+  judicial         Int      @default(dbgenerated("true"))
+  instituicao      String
+  cnpj_instituicao String
+  uf               String
+  Item             Item[]
+}
+
+model Produto {
+  id              Int      @id @unique @default(autoincrement())
+  cnpj_fabricante String
+  fabricante      PJ       @relation(references: [cnpj], fields: [cnpj_fabricante], onDelete: Cascade)
+  nome            String
+  susbstancia     String
+  embalagem       String
+  codigobr        String
+  unidade         String
+  qtd_embalagem   Int
+  registro_anvisa String
+  material_id     Int
+  material        Material @relation(references: [id], fields: [material_id], onDelete: Cascade)
+  Item            Item[]
+}
+
+model Item {
+  id              Int      @id @default(autoincrement())
+  compra_id       Int
+  compra          Compra   @relation(fields: [compra_id], references: [id], onDelete: Cascade)
+  codigobr        String
+  unidade         String
+  anvisa          String?
+  cnpj_fornecedor String
+  fornecedor      PJ       @relation(name: "Fornecedor", fields: [cnpj_fornecedor], references: [cnpj], onDelete: Cascade)
+  cnpj_fabricante String
+  fabricante      PJ       @relation(name: "Fabricante", fields: [cnpj_fabricante], references: [cnpj], onDelete: Cascade)
+  qtd_item        Int
+  valor_item      Float
+  material_id     Int
+  material        Material @relation(fields: [material_id], references: [id], onDelete: Cascade)
+  produto_id      Int
+  produto         Produto  @relation(fields: [produto_id], references: [id], onDelete: Cascade)
+}
+
+model PJ {
+  cnpj            String    @id
+  razao_social    String
+  ibge            String
+  municipio       String
+  uf              String
+  fornecedorItems Item[]    @relation(name: "Fornecedor")
+  fabricanteItems Item[]    @relation(name: "Fabricante")
+  Produto         Produto[]
+}
+
 model Material {
-  ID_MATERIAL Int    @id @default(autoincrement())
-  CODIGOBR    String
-  DS_CLASSE   String
-  PDM         String
-  DS_MATERIAL String
-  DS_UNIDADE  String
-  DISPONIVEL  Int    @default(dbgenerated("true"))
+  id         Int       @id @unique @default(autoincrement())
+  codigobr   String
+  unidade    String
+  classe     String
+  pdm        String
+  descricao  String
+  disponivel Int       @default(dbgenerated("true"))
+  Produto    Produto[]
+  Item       Item[]
 }
 
 model User {

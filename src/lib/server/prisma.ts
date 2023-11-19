@@ -5,11 +5,26 @@ if (process.env.NODE_ENV == "development") global.__prisma = prisma;
 
 export default prisma;
 
+// import { PrismaClient } from "@prisma/client";
 // import { PrismaLibSQL } from "@prisma/adapter-libsql";
 // import { createClient } from "@libsql/client";
 // import { TURSO_DATABASE_URL, TURSO_AUTH_TOKEN } from "$env/static/private";
-
+// import { dev } from "$app/environment";
+// // Create a new instance of the libSQL database client
 // const libsql = createClient({
-//   url: process.env.TURSO_DATABASE_URL,
-//   authToken: process.env.TURSO_AUTH_TOKEN,
+//   // @ts-ignore
+//   url: TURSO_DATABASE_URL,
+//   authToken: TURSO_AUTH_TOKEN,
 // });
+
+// // Create a Prisma "adapter" for libSQL
+// const adapter = new PrismaLibSQL(libsql);
+// // Pass the adapter option to the Prisma Client instance
+// const prisma = new PrismaClient({ adapter });
+
+// if (dev) {
+//   // @ts-ignore
+//   global.__prisma = prisma;
+// }
+
+// export default prisma;

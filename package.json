@@ -38,6 +38,7 @@
     "svelte": "^4.0.5",
     "svelte-check": "^3.6.0",
     "svelte-headless-table": "^0.17.7",
+    "svelte-preprocess-import-assets": "^1.1.0",
     "sveltekit-superforms": "^1.10.2",
     "tailwind-merge": "^2.0.0",
     "tailwind-variants": "^0.1.18",

@@ -10,18 +10,18 @@ export async function GET({ url }) {
     const skip = skipParam ? parseInt(skipParam) : undefined; // Default skip
     const pdms = await db.material.findMany({
       select: {
-        PDM: true,
+        pdm: true,
       },
-      distinct: ["PDM"],
+      distinct: ["pdm"],
       orderBy: {
-        PDM: "asc",
+        pdm: "asc",
       },
       take: limit,
       skip: skip,
     });
 
     // Map the result to an array of strings
-    const pdmsStrings: string[] = pdms.map((item) => item.PDM);
+    const pdmsStrings: string[] = pdms.map((item) => item.pdm);
 
     return json(pdmsStrings); // Wrap the array in a Response object
   } catch (error) {
