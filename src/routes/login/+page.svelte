@@ -17,7 +17,7 @@
 		</div>
 		<div class="relative z-20 mt-auto">
 			<blockquote class="space-y-2">
-				<h4 class="font-semibold">Uso Obrigatório</h4>
+				<h4 class="font-semibold">Uso Obrigatório em Licitações de Medicamentos</h4>
 				<p class="text-xs">
 					Em junho de 2017 foi publicada a Resolução nº 18 da Comissão Intergestores Tripartite que tornou obrigatória a utilização do BPS pelos estados, municípios e distrito federal. Para cumprir com as determinações da Resolução, as instituições de saúde que realizam licitações de medicamentos deverão possuir um cadastro no BPS de forma que consigam fazer a inserção das informações de suas compras no sistema. Inicialmente será obrigatória informar no BPS apenas as compras de medicamentos. A data para inserção de materiais e produtos para a saúde será pactuada oportunamente.
 				</p>

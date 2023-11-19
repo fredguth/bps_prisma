@@ -4,7 +4,7 @@ import { OAuthRequestError } from "@lucia-auth/oauth";
 import type { RequestHandler } from "./$types.js";
 
 export const GET: RequestHandler = async ({ url, cookies, locals }) => {
-  const storedState = cookies.get("gootle_oauth_state");
+  const storedState = cookies.get("google_oauth_state");
   const state = url.searchParams.get("state");
   const code = url.searchParams.get("code");
 
