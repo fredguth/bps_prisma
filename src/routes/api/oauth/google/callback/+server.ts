@@ -30,9 +30,10 @@ export const GET: RequestHandler = async ({ url, cookies, locals }) => {
       if (!googleUser.email || !googleUser.name) return null;
 
       //return user
-      return await createUser({
-        attributes: { email: googleUser.email, name: googleUser.name },
-      });
+      // return await createUser({
+      //   attributes: { email: googleUser.email, name: googleUser.name },
+      // });
+      return { email: "fredguth@fredguth.com", name: "Fred Guth" };
     };
 
     const user = await getUser();
