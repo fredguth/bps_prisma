@@ -1,5 +1,4 @@
 import { json } from "@sveltejs/kit";
-import type { Material } from "@prisma/client";
 import db from "$lib/server/prisma";
 
 export async function GET({ url }) {
@@ -9,7 +8,7 @@ export async function GET({ url }) {
     const limit = limitParam ? parseInt(limitParam) : undefined; // Default limit
     const skip = skipParam ? parseInt(skipParam) : undefined; // Default skip
 
-    const classes: Material[] = await db.material.findMany({
+    const classes = await db.material.findMany({
       select: {
         DS_CLASSE: true,
       },
@@ -22,9 +21,7 @@ export async function GET({ url }) {
     });
 
     // Map the result to an array of strings
-    const classesStrings: string[] = classes.map(
-      (item: Material) => item.DS_CLASSE
-    );
+    const classesStrings: string[] = classes.map((item) => item.DS_CLASSE);
 
     return json(classesStrings); // Wrap the array in a Response object
   } catch (error) {

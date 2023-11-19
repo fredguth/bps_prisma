@@ -4,7 +4,7 @@
   import { page } from "$app/stores";
   import { onMount } from "svelte";
 
-  export let data;
+  // export let data;
 
   $: classesActive = (href: string) =>
    href === $page.url.pathname ? "!bg-primary-500" : "";
@@ -37,11 +37,7 @@
   </main>
   <footer class="flex flex-col h-20 bg-white border-t-2">
     <div class="relative container-lg mx-auto">
-      <!-- <img
-        class="w-80 absolute right-0"
-        src="https://sage.saude.gov.br/sistemas/logos/marca_MS.png"
-        alt="Icone Ministério da saúde"
-      /> -->
+
       <img
         class="w-80 absolute right-0"
         src="img-logo-MS.png"

@@ -1,6 +1,5 @@
 /** @type {import('./$types').RequestHandler} */
 import { json } from "@sveltejs/kit";
-import type { Material } from "@prisma/client";
 import db from "$lib/server/prisma";
 
 export async function GET({ url }) {
@@ -10,7 +9,7 @@ export async function GET({ url }) {
     const limit = limitParam ? parseInt(limitParam) : undefined; // Default limit
     const skip = skipParam ? parseInt(skipParam) : undefined; // Default skip
 
-    const unidades: Material[] = await db.material.findMany({
+    const unidades = await db.material.findMany({
       select: {
         DS_UNIDADE: true,
       },
@@ -23,9 +22,7 @@ export async function GET({ url }) {
     });
 
     // Map the result to an array of strings
-    const unidadesStrings: string[] = unidades.map(
-      (item: Material) => item.DS_UNIDADE
-    );
+    const unidadesStrings: string[] = unidades.map((item) => item.DS_UNIDADE);
 
     return json(unidadesStrings); // Wrap the array in a Response object
   } catch (error) {
