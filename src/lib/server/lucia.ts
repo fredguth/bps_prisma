@@ -25,7 +25,8 @@ export const auth = lucia({
 export const googleAuth = google(auth, {
   clientId: GOOGLE_CLIENT_ID,
   clientSecret: GOOGLE_CLIENT_SECRET,
-  redirectUri: "/api/oauth/google/callback",
+  redirectUri:
+    "https://bps-prisma-fredguth.vercel.app/api/oauth/google/callback",
   scope: [
     "https://www.googleapis.com/auth/userinfo.email",
     "https://www.googleapis.com/auth/userinfo.profile",
