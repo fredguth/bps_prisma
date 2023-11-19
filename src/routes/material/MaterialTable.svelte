@@ -25,7 +25,7 @@ import {
 } from "$lib/components/ui/datatable"
 import data from "$lib/components/data/tasks.json";
 
-export let rows;
+// export let rows;
 
 const table = createTable(readable(data), {
   select: addSelectedRows(),

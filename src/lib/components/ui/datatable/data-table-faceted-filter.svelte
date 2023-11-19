@@ -6,7 +6,7 @@
 	import { cn } from "$lib/utils";
 	import Separator from "../separator/separator.svelte";
 	import Badge from "../badge/badge.svelte";
-	import { string } from "zod";
+	// import { string } from "zod";
 
 
 	export let filterValues: string[] = [];
