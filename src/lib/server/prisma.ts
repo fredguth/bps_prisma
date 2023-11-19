@@ -1,7 +1,12 @@
 import { PrismaClient } from "@prisma/client";
+import { dev } from "$app/environment";
 const prisma = global.__prisma || new PrismaClient();
 
-if (process.env.NODE_ENV == "development") global.__prisma = prisma;
+if (dev) {
+  // @ts-ignore
+  global.__prisma = prisma;
+}
+
 
 export default prisma;
 
