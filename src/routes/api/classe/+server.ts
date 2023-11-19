@@ -1,6 +1,6 @@
 import { json } from "@sveltejs/kit";
-import { prisma as db } from "$lib/server/prisma";
-import type { Material } from "$lib/server/prisma";
+import type { Material } from "@prisma/client";
+import db from "$lib/server/prisma";
 
 export async function GET({ url }) {
   try {

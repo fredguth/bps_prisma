@@ -1,7 +1,9 @@
 /** @type {import('./$types').RequestHandler} */
 import { json } from "@sveltejs/kit";
-import { prisma as db } from "$lib/server/prisma";
-import type { Material } from "$lib/server/prisma";
+import type { Material } from "@prisma/client";
+import db from "$lib/server/prisma";
+// import { prisma as db } from "$lib/server/prisma";
+// import type { Material } from "$lib/server/prisma";
 
 export async function GET({ url }) {
   try {
@@ -9,7 +11,6 @@ export async function GET({ url }) {
     const skipParam = url.searchParams.get("skip");
     const limit = limitParam ? parseInt(limitParam) : undefined; // Default limit
     const skip = skipParam ? parseInt(skipParam) : undefined; // Default skip
-
     const pdms: Material[] = await db.material.findMany({
       select: {
         PDM: true,
