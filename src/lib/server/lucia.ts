@@ -25,7 +25,7 @@ export const auth = lucia({
 export const googleAuth = google(auth, {
   clientId: GOOGLE_CLIENT_ID,
   clientSecret: GOOGLE_CLIENT_SECRET,
-  redirectUri: "/login/google/callback",
+  redirectUri: "/api/oauth/google/callback",
   scope: [
     "https://www.googleapis.com/auth/userinfo.email",
     "https://www.googleapis.com/auth/userinfo.profile",
