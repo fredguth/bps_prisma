@@ -54,7 +54,13 @@
     />
     {#if open}
       <Command.Root class="w-full">
-        <Command.Group>Limpar</Command.Group>
+        <Command.Group onSelect={() =>
+          runCommand(() => {
+            value = "";
+            open = false;
+            query = "";
+            closeAndFocusTrigger(ids.trigger);
+          })}>Limpar</Command.Group>
         <Command.List
           class="absolute z-50 rounded-md border bg-popover p-4 text-popover-foreground shadow-md outline-none w-full"
         >

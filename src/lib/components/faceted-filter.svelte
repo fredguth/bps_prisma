@@ -5,7 +5,7 @@
   import { PlusCircled, Check } from "radix-icons-svelte";
   import { Button } from "$lib/components/ui/button";
   import { filterByQuery, runCommand, toTitleCase, cn } from "$lib/utils";
-
+  import { tick } from "svelte";
   export let items: string[] = [];
   export let title: string = "Title";
   export let slice: number = 10;
@@ -16,14 +16,20 @@
   let className: string | undefined | null = undefined;
   export { className as class };
 
-  let open = true;
+  let open = false;
 
   $: filtered = items ? filterByQuery(items, query)?.slice(0, slice) : [];
 
+  function closeAndFocusTrigger(triggerId: string) {
+    open = false;
+    tick().then(() => {
+      document.getElementById(triggerId)?.focus();
+    });
+  }
 </script>
 
 
-<Popover.Root>
+<Popover.Root bind:open let:ids>
   <Popover.Trigger>
     <Button variant="outline" size="sm" class="h-8">
       <PlusCircled class="mr-2 h-4 w-4" />
@@ -47,6 +53,7 @@
               value = item;
               open = false;
               query = "";
+              closeAndFocusTrigger(ids.trigger);
             })}
         >
           {toTitleCase(item)}
