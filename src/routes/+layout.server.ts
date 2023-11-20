@@ -24,6 +24,6 @@ export const load: LayoutServerLoad = async ({ fetch, locals }) => {
   const pdms = await pdmResponse.json();
   const classes = await classeResponse.json();
   const unidades = await unidadeResponse.json();
-  console.log("pdms", pdms);
+
   return { user, props: { pdms, classes, unidades } };
 };
