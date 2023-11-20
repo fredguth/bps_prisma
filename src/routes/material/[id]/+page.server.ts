@@ -1,7 +1,8 @@
 import db from "$lib/server/prisma";
 import type { PageServerLoad } from "../$types";
 
-export const load = (async ({ params }) => {
+let id: string = "";
+export const load = (async ({ params, url }) => {
   const { id } = params;
   const response = await db.material.findFirst({
     where: {

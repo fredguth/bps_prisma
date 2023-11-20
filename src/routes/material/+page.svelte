@@ -136,6 +136,7 @@
     changeUrl(codigobr, unidade, classe, pdm, qD, descricao, filteredDescricoes, mounted),
     300
   );
+  $: console.log(materials)
 </script>
 
 <Card.Root class="w-full">
@@ -148,21 +149,37 @@
   </Card.Header>
   <Card.Content>
     <div class="flex flex-1 items-center space-x-2 align-middle">
+      <FacetedFilter
+      items={classes}
+      query={qC}
+      bind:value={classe}
+      placeholder="Classe do Material"
+      title="Classe"
+    />
+    <FacetedFilter
+        items={pdms}
+        query={qP}
+        bind:value={pdm}
+        placeholder="PDM"
+        title="Padrão Descritivo do Material"
+      />
       <Input
         type="text"
         bind:value={codigobr}
         on:input={onChange}
         class="w-32 font-mono non-italic placeholder:non-italic"
-        placeholder="BR"
+        placeholder="Código Material"
       />
       <TypeAhead
-        items={descricoes}
-        bind:value={descricao}
-        bind:query={qD}
-        bind:filtered={filteredDescricoes}
-        placeholder="Descrição"
-        class="z-50 w-1/2"
-      />
+      items={descricoes}
+      bind:value={descricao}
+      bind:query={qD}
+      bind:filtered={filteredDescricoes}
+      placeholder="Descrição Material"
+      class="z-50 w-1/2"
+    />
+
+
       <TypeAhead
         items={unidades}
         query={qU}
@@ -171,20 +188,8 @@
         class="z-50"
       />
 
-      <FacetedFilter
-        items={pdms}
-        query={qP}
-        bind:value={pdm}
-        placeholder="PDM"
-        title="PDM"
-      />
-      <FacetedFilter
-        items={classes}
-        query={qC}
-        bind:value={classe}
-        placeholder="Classe"
-        title="Classe"
-      />
+
+
     </div>
     {#if !completed}
       <h4 class="pt-4">
