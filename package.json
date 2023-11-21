@@ -20,8 +20,6 @@
     "@vercel/edge": "^1.1.1"
   },
   "devDependencies": {
-    "@govbr-ds/core": "^3.4.0",
-    "@govbr-ds/webcomponents": "^1.14.0",
     "@lucia-auth/adapter-prisma": "^3.0.2",
     "@lucia-auth/oauth": "^3.5.0",
     "@sveltejs/adapter-auto": "^2.0.0",
