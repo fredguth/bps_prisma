@@ -17,7 +17,6 @@
 {#if !data.user}
     <div>Not logged in</div>
     <a href="/login">Login</a>
-
 {:else}
     <div>Logged in as {data.user.name}</div>
     <button on:click={logout}>Logout</button>

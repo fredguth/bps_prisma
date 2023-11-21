@@ -1,10 +1,11 @@
 <script lang="ts">
-    import { DataHandler, Th, ThFilter, type State } from '@vincjo/datatables/remote'
-    import Datatable from './Datatable.svelte'
+    import { Datatable, DataHandler, Th, ThFilter, type State } from '@vincjo/datatables/remote'
+    // import Datatable from './Datatable.svelte'
     import { reload } from './api'
     export let data: any[]
 
-    const handler = new DataHandler(data?.dataset, { rowsPerPage: 100 })
+
+    const handler = new DataHandler(data?.dataset, { rowsPerPage: 10 })
     const rows = handler.getRows()
 
     handler.onChange((state: State) => reload(state))
@@ -12,9 +13,9 @@
     $: dataset = data?.dataset;
     $: console.log(dataset, handler, rows)
 </script>
-
+{#if (dataset)}
 <Datatable {handler}>
-    <table>
+    <table class="w-full">
         <thead>
             <tr>
                 <Th {handler} orderBy="id">ID</Th>
@@ -38,7 +39,7 @@
         </tbody>
     </table>
 </Datatable>
-
+{/if}
 <style>
     thead {
         background: #fff;
