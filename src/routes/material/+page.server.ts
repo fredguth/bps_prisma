@@ -1,17 +1,18 @@
 import db from "$lib/server/prisma";
 /** @type {import('./$types').PageServerLoad} */
+import type { Material, PrismaPromise } from "@prisma/client";
 
 export const load = async ({ url }) => {
   console.log("LOADING MATERIALS....");
-  const takes = 50;
+  const takes = 30;
   const limitParam = url.searchParams.get("limit");
   const skipParam = url.searchParams.get("skip");
-  const query = url.searchParams.get("q");
-  const unidade = url.searchParams.get("unidade");
-  const pdm = url.searchParams.get("pdm");
-  const classe = url.searchParams.get("classe");
-  const codigobr = url.searchParams.get("codigobr");
-  const descricao = url.searchParams.get("descricao");
+  const query = url.searchParams.get("q")?.toUpperCase();
+  const unidade = url.searchParams.get("unidade")?.toUpperCase();
+  const pdm = url.searchParams.get("pdm")?.toUpperCase();
+  const classe = url.searchParams.get("classe")?.toUpperCase();
+  const codigobr = url.searchParams.get("codigobr")?.toUpperCase();
+  const descricao = url.searchParams.get("descricao")?.toUpperCase();
   const limit = codigobr ? 1 : limitParam ? parseInt(limitParam) : takes; // Default limit
   const skip = skipParam ? parseInt(skipParam) : 0; // Default skip
 
@@ -37,15 +38,7 @@ export const load = async ({ url }) => {
   };
 
   // Perform the query with pagination
-  const materials = db.material.findMany({
-    select: {
-      id: true,
-      codigobr: true,
-      descricao: true,
-      unidade: true,
-      pdm: true,
-      classe: true,
-    },
+  const materials: PrismaPromise<Material[]> = db.material.findMany({
     where: whereClause,
     skip: skip,
     take: limit,
@@ -57,26 +50,4 @@ export const load = async ({ url }) => {
   });
 
   return { materials, totalMatches };
-  // if (!limitParam && !skipParam) {
-  //   const lazy = db.material.findMany({
-  //     select: {
-  //       id: true,
-  //       codigobr: true,
-  //       descricao: true,
-  //       unidade: true,
-  //       pdm: true,
-  //       classe: true,
-  //     },
-  //     where: whereClause,
-  //     skip: takes,
-
-  //   });
-  //   return {
-  //     materials,
-  //     lazy,
-  //   };
-  // } else
-  //   return {
-  //     materials,
-  //   };
 };

@@ -84,7 +84,9 @@ export function toTitleCase(str: string): string {
   return str
     .toLowerCase()
     .split(" ")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .map((word) =>
+      word.length > 1 ? word.charAt(0).toUpperCase() + word.slice(1) : word
+    )
     .join(" ");
 }
 export const throttle = <R, A extends any[]>(

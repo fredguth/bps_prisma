@@ -3,7 +3,7 @@
 >
   <div class="flex container">
     <!-- <button style="text-wrap: nowrap;" class="text-blue-800 items-center cursor-pointer text-lg font-semibold justify-center relative text-center inline-flex w-8 h-8 rounded-full"><i class="font-black"></i></button> -->
-    <img src="/bps.svg" alt="logo-bps" class="mr-4 h-12" />
+    <!-- <img src="/bps.png" alt="logo-bps" class="mr-4 h-12" /> -->
 
     <div>
       <div class="text-[1.38rem] leading-7">Banco de Preços em Saúde</div>

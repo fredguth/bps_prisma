@@ -24,6 +24,7 @@
     "@lucia-auth/oauth": "^3.5.0",
     "@sveltejs/adapter-auto": "^2.0.0",
     "@sveltejs/kit": "^1.27.4",
+    "@tanstack/svelte-table": "^8.10.7",
     "@vincjo/datatables": "^1.14.0",
     "autoprefixer": "^10.4.14",
     "bits-ui": "^0.9.8",
