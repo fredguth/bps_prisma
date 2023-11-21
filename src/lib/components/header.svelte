@@ -9,6 +9,10 @@
       <div class="text-[1.38rem] leading-7">Banco de Preços em Saúde</div>
       <div class="font-medium hidden lg:block">DESID | Ministério da Saúde</div>
     </div>
-    <div class="relative bg-red-400  lg:w-1/2  ml-auto hidden md:block" />
+    <div
+      class="relative lg:w-1/2 ml-auto hidden md:block items-center float-right text-sm justify-end"
+    >
+      <slot name="user-nav" />
+    </div>
   </div>
 </header>

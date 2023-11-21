@@ -5,6 +5,7 @@
   import img from '$lib/assets/img-logo-MS.png';
   import Header from '$lib/components/Header.svelte';
   import Footer from '$lib/components/Footer.svelte';
+  import UserNav from "$lib/components/user-nav.svelte";
 
   // export let data;
 
@@ -13,7 +14,9 @@
 
 </script>
 <div class="flex flex-col min-h-screen">
-  <Header/>
+  <Header>
+    <UserNav slot="user-nav"></UserNav>
+    </Header>
 <!-- <header></header> -->
   <!-- <main class="mb-auto mx-auto container-lg"> -->
     <main class="flex-grow mx-auto p-8 container">
