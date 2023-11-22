@@ -1,14 +1,14 @@
 <script lang="ts">
-    import { Input } from "$lib/components/ui/input";
-      import Filter from '$lib/components/filter.svelte';
+  import { Input } from "$lib/components/ui/input";
+  import Filter from '$lib/components/filter.svelte';
 	import type { PageData} from "../$types";
   import type { Material } from "@prisma/client";
   import { DataHandler, Th } from '@vincjo/datatables/remote'
   import Datatable from '$lib/components/Datatable.svelte'
   import type { State } from "@vincjo/datatables/remote";
   import { toTitleCase } from "$lib/utils";
-  import { page } from "$app/stores";
-  import { goto } from "$app/navigation";
+  import { changeUrl } from "./changeUrl";
+  import { onMount } from "svelte";
   export let data: PageData;
 
   let unidades: string[] = data.unidades;
@@ -19,18 +19,29 @@
   let completed: boolean = (totalRows < 2);
   let codigobr: string = "";
   let descricao: string = "";
+  let classe: string = "";
+  let unidade: string = "";
+  let pdm: string = "";
+  let query: string = "";
+  let mounted:boolen = false;
+  onMount(() => {
+    mounted = true;
+  });
 
   const  reload = async(state:State)=>{
     console.log('RELOADING...', state)
-    const url = new URL($page.url);
-    url.searchParams.set('skip', state.offset.toString());
-    url.searchParams.set('limit', state.rowsPerPage.toString());
-    if (state.search) url.searchParams.set('query', state.search);
-    state.filters?.forEach( (filter) => {
-      if ((filter.filterBy != "codigobr") || (String(filter.value).length >6 ))
-      { url.searchParams.set(String(filter.filterBy), String(filter.value));}
-    })
-    await goto(url, {replaceState: true, invalidateAll:true});
+    // const url = new URL($page.url);
+    // url.searchParams.set('skip', state.offset.toString());
+    // url.searchParams.set('limit', state.rowsPerPage.toString());
+    // if (state.search) url.searchParams.set('query', state.search);
+    // state.filters?.forEach( (filter) => {
+    //   console.log('never here')
+    //   if ((filter.filterBy != "codigobr") || (String(filter.value).length >6 ))
+    //   { url.searchParams.set(String(filter.filterBy), String(filter.value));}
+    // })
+    // await goto(url);
+    //
+    changeUrl(codigobr, unidade, classe, pdm, query, descricao, mounted, completed)
     return data.materials;
   }
   // Remover
@@ -48,16 +59,17 @@
             next: 'Próximo'
         }
       })
-
   handler.onChange( (state: State) => reload(state) )
-  const rows = handler.getRows();
+  $: totalRows = data.totalRows;
+  $: totalRows? handler.setTotalRows(totalRows): null;
+  const  rows = handler?.getRows();
   const ThStyle = "sticky top-0 h-10 border-top-1 px-2 text-left align-middle font-medium bg-slate-100"
   const TfStyle = "sticky bottom-0 h-10 px-2 text-left align-middle font-medium bg-slate-100 z-20"
   const TdStyle = "text-xs p-2 align-middle tabular-nums font-mono"
 </script>
 
 <div class= "flex items-start h-14 space-x-4 p-4">
-  <Filter {handler} title="Classe" filterBy="classe" options={classes}/>
+  <Filter bind:value={classe} title="Classe" filterBy="classe" options={classes}/>
   <Filter {handler} title="Padrão" filterBy="pdm" options = {pdms}/>
   <Input class="w-32 h-8  font-mono slashed-zero placeholder:font-sans" bind:value={codigobr} placeholder={codigobr? codigobr: 'Código Material'} />
   <Input class="w-full h-8" bind:value={descricao} placeholder={descricao? descricao: 'Descrição'}/>

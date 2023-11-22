@@ -1,15 +1,18 @@
 <script lang="ts">
-
   import { Input } from "$lib/components/ui/input";
   import * as Command from "$lib/components/ui/command";
   import * as Popover from "$lib/components/ui/popover";
   import { PlusCircled, Check } from "radix-icons-svelte";
   import { Button } from "$lib/components/ui/button";
-  import { filterByQuery, toTitleCase, runCommand } from "$lib/utils";
+  import { filterByQuery, toTitleCase, runCommand, throttle } from "$lib/utils";
   import { page } from "$app/stores";
   import { goto } from "$app/navigation";
   import type { DataHandler, Row } from '@vincjo/datatables/remote'
-  import { check } from '@vincjo/datatables'
+  import { onMount } from "svelte";
+  let mounted = false;
+  onMount(() => {
+    mounted = true;
+  });
 
 type T = $$Generic<Row>
 
@@ -23,12 +26,15 @@ export let filterBy: string = ''
 
 
   $: filtered = options ? filterByQuery(options, query) : [];
-  $: if (value) {async()=>{
+  $: {
+    if (mounted && value) {
+
     const url = new URL($page.url);
-    url.searchParams.set(filterBy, value);
-    await goto(url);
-    handler.invalidate()
-  }}
+    url.searchParams.set(filterBy, value)
+    console.log('reseting url with ', value)
+    value = ""
+    goto(url).then(()=>{handler.invalidate()})}
+  }
 
 </script>
 
@@ -46,7 +52,7 @@ export let filterBy: string = ''
     </Button>
   </Popover.Trigger>
   <Popover.Content class="w-80">
-    <Command.Root bind:value>
+    <Command.Root>
       <Input bind:value={query} placeholder={value? value: title} class="w-72" />
 
       <Command.List
@@ -67,7 +73,6 @@ export let filterBy: string = ''
             onSelect={() =>
               runCommand(() => {
                 value = item;
-
                 open = false;
                 query = "";
               })}

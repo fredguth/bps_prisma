@@ -49,6 +49,7 @@ export const load = async ({ url }) => {
     where: whereClause,
   });
 
+
   const unidades = db.material
     .findMany({
       select: { unidade: true },
