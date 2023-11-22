@@ -20,12 +20,12 @@
 
   $: filtered = items ? filterByQuery(items, query)?.slice(0, slice) : [];
 
-  function closeAndFocusTrigger(triggerId: string) {
-    open = false;
-    tick().then(() => {
-      document.getElementById(triggerId)?.focus();
-    });
-  }
+  // function closeAndFocusTrigger(triggerId: string) {
+  //   open = false;
+  //   tick().then(() => {
+  //     document.getElementById(triggerId)?.focus();
+  //   });
+  // }
 </script>
 
 

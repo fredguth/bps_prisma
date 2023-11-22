@@ -17,7 +17,8 @@
     "@prisma/adapter-libsql": "^5.6.0",
     "@prisma/client": "^5.6.0",
     "@types/node": "20.9.2",
-    "@vercel/edge": "^1.1.1"
+    "@vercel/edge": "^1.1.1",
+    "svelte-headlessui": "^0.0.32"
   },
   "devDependencies": {
     "@lucia-auth/adapter-prisma": "^3.0.2",

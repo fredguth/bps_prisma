@@ -1,16 +1,25 @@
 <script lang="ts">
-  import type { PageData } from "../$types";
-  import { writable } from "svelte/store";
+    import { Input } from "$lib/components/ui/input";
+      import Filter from '$lib/components/filter.svelte';
+	import type { PageData} from "../$types";
   import type { Material } from "@prisma/client";
-  import { DataHandler, Datatable, Th, ThFilter } from '@vincjo/datatables/remote'
-  import type { State, Row } from "@vincjo/datatables/remote";
+  import { DataHandler, Th } from '@vincjo/datatables/remote'
+  import Datatable from '$lib/components/Datatable.svelte'
+  import type { State } from "@vincjo/datatables/remote";
   import { toTitleCase } from "$lib/utils";
   import { page } from "$app/stores";
-  import { goto, invalidateAll } from "$app/navigation";
+  import { goto } from "$app/navigation";
   export let data: PageData;
 
-  $: console.log(data);
-  $: materials = data.materials;
+  let unidades: string[] = data.unidades;
+  let pdms: string[] = data.pdms;
+  let classes: string[] = data.classes;
+  // let descricoes: string[] = data.descricoes;
+  let totalRows: number = parseInt(data.totalRows)  || 0;
+  let completed: boolean = (totalRows < 2);
+  let codigobr: string = "";
+  let descricao: string = "";
+
   const  reload = async(state:State)=>{
     console.log('RELOADING...', state)
     const url = new URL($page.url);
@@ -24,37 +33,61 @@
     await goto(url, {replaceState: true, invalidateAll:true});
     return data.materials;
   }
-  const handler = new DataHandler(data.materials, { rowsPerPage: 30 })
+  // Remover
+  const handler = new DataHandler(data.materials, {
+    rowsPerPage: 30,
+    totalRows: data.totalRows,
+    i18n: {
+            search: 'Buscar...',
+            show: 'Mostrar',
+            entries: 'registros',
+            filter: 'Filtrar',
+            rowCount: 'Mostrando {start} a {end} de {total} registros.',
+            noRows: 'Sem resultado',
+            previous: 'Anterior',
+            next: 'Próximo'
+        }
+      })
+
   handler.onChange( (state: State) => reload(state) )
   const rows = handler.getRows();
-  const ThStyle = "sticky top-0 h-10 px-2 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px] bg-white"
-  const TdStyle = "text-xs p-2 align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px] tabular-nums font-mono"
+  const ThStyle = "sticky top-0 h-10 border-top-1 px-2 text-left align-middle font-medium bg-slate-100"
+  const TfStyle = "sticky bottom-0 h-10 px-2 text-left align-middle font-medium bg-slate-100 z-20"
+  const TdStyle = "text-xs p-2 align-middle tabular-nums font-mono"
 </script>
-<div class="flex flex-col h-[800px]">
+
+<div class= "flex items-start h-14 space-x-4 p-4">
+  <Filter {handler} title="Classe" filterBy="classe" options={classes}/>
+  <Filter {handler} title="Padrão" filterBy="pdm" options = {pdms}/>
+  <Input class="w-32 h-8  font-mono slashed-zero placeholder:font-sans" bind:value={codigobr} placeholder={codigobr? codigobr: 'Código Material'} />
+  <Input class="w-full h-8" bind:value={descricao} placeholder={descricao? descricao: 'Descrição'}/>
+  <Filter {handler} title="Unidade" filterBy="unidade" options = {unidades}/>
+</div>
+<div class="flex flex-col h-[600px]">
   <div class="flex-grow overflow-y-auto">
-<Datatable {handler}>
+<Datatable {handler} search={false}>
   <table class="w-full caption-bottom text-sm border-separate relative">
-    <thead class="[&_tr]:border-b start-0 bg-white">
+    <thead class="start-0">
       <tr>
-        <Th {handler} orderBy="classe" class={ThStyle}>Classe</Th>
-        <Th {handler} orderBy="pdm" class={ThStyle}>Padrão</Th>
-        <Th {handler} orderBy="codigobr" class={ThStyle}>Material</Th>
-        <Th {handler} orderBy="descricao" class={ThStyle}>Descricao</Th>
-        <Th {handler} orderBy="unidade" class={ThStyle}>Unidade</Th>
+        <th class={ThStyle}>Classe</th>
+        <th class={ThStyle}>Padrão</th>
+        <th class={ThStyle}>Material</th>
+        <th class={ThStyle}>Descricao</th>
+        <th class={ThStyle}>Unidade</th>
       </tr>
-      <tr>
+      <!-- <tr>
         <ThFilter {handler} filterBy="classe" />
         <ThFilter {handler} filterBy="pdm" />
         <ThFilter {handler} filterBy="codigobr" />
         <ThFilter {handler} filterBy="descricao" />
         <ThFilter {handler} filterBy="unidade" />
-      </tr>
+      </tr> -->
     </thead>
     <!-- <tbody class='tabular-nums  text-sm font-mono slashed-zero'> -->
     <tbody>
       {#each $rows as row}
         <tr
-          class="px-2 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px] even:bg-blue-50 odd:bg-white"
+          class="px-2 text-left align-middle font-medium text-muted-foreground  even:bg-blue-50 odd:bg-white"
         >
           <td class={TdStyle}>{toTitleCase(row.classe)}</td>
           <td class={TdStyle}>{toTitleCase(row.pdm)}</td>
@@ -64,12 +97,14 @@
         </tr>
       {/each}
     </tbody>
-    <tfoot class="end-0 sticky h-10">
-      <Th {handler} orderBy="classe" class={ThStyle}>Classe</Th>
-      <Th {handler} orderBy="pdm" class={ThStyle}>Padrão</Th>
-      <Th {handler} orderBy="codigobr" class={ThStyle}>Material</Th>
-      <Th {handler} orderBy="descricao" class={ThStyle}>Descricao</Th>
-      <Th {handler} orderBy="unidade" class={ThStyle}>Unidade</Th>
+    <tfoot class="end-0 h-10 bg-slate-50">
+      <tr>
+        <th class={TfStyle}>Classe</th>
+        <th class={TfStyle}>Padrão</th>
+        <th class={TfStyle}>Material</th>
+        <th class={TfStyle}>Descricao</th>
+        <th class={TfStyle}>Unidade</th>
+      </tr>
     </tfoot>
   </table>
 </Datatable>

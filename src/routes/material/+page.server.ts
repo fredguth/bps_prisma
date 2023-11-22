@@ -45,9 +45,43 @@ export const load = async ({ url }) => {
   });
 
   // Perform the count query to get the total number of rows without limit
-  const totalMatches = await db.material.count({
+  const totalRows = db.material.count({
     where: whereClause,
   });
 
-  return { materials, totalMatches };
+  const unidades = db.material
+    .findMany({
+      select: { unidade: true },
+      distinct: ["unidade"],
+      where: whereClause,
+      take: 1000,
+    })
+    .then((materials) => materials.map((material) => material.unidade));
+
+  const classes = db.material
+    .findMany({
+      select: { classe: true },
+      distinct: ["classe"],
+      where: whereClause,
+      take: 1000,
+    })
+    .then((materials) => materials.map((material) => material.classe));
+  const pdms = db.material
+    .findMany({
+      select: { pdm: true },
+      distinct: ["pdm"],
+      where: whereClause,
+      take: 1000,
+    })
+    .then((materials) => materials.map((material) => material.pdm));
+  // const descricoes = db.material
+  //   .findMany({
+  //     select: { descricao: true },
+  //     distinct: ["descricao"],
+  //     where: whereClause,
+  //     take: 1000,
+  //   })
+  // .then((materials) => materials.map((material) => material.descricao));
+
+  return { materials, unidades, classes, pdms, totalRows };
 };
