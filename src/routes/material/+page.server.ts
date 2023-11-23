@@ -74,19 +74,24 @@ export const load = async ({ url }) => {
       take: 1000,
     })
     .then((materials) => materials.map((material) => material.pdm))
-  return {
-    materials,
-    unidades,
-    classes,
-    pdms,
-    totalRows,
-    codigobr,
-    descricao,
-    classe,
-    unidade,
-    pdm,
-    query,
-    skip,
-    take: limit,
-  }
+
+  const returning = {
+		materials,
+		unidades,
+		classes,
+		pdms,
+		totalRows,
+		filters: {
+			codigobr,
+			descricao,
+			classe,
+			unidade,
+			pdm,
+			query,
+			skip,
+			take: limit,
+		},
+	}
+  console.log('Loading:', returning)
+	return returning
 };
