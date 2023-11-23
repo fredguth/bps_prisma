@@ -1,6 +1,10 @@
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["driverAdapters"]
+  // previewFeatures = ["driverAdapters"]
+}
+generator docs {
+  provider = "node node_modules/prisma-docs-generator"
+  output = "../docs"
 }
 
 datasource db {

@@ -1,126 +1,146 @@
 <script lang="ts">
-  import { Input } from "$lib/components/ui/input";
-  import Filter from '$lib/components/filter.svelte';
-	import type { PageData} from "../$types";
-  import type { Material } from "@prisma/client";
-  import { DataHandler, Th } from '@vincjo/datatables/remote'
-  import Datatable from '$lib/components/Datatable.svelte'
-  import type { State } from "@vincjo/datatables/remote";
-  import { toTitleCase } from "$lib/utils";
-  import { changeUrl } from "./changeUrl";
-  import { onMount } from "svelte";
-  export let data: PageData;
-
-  let unidades: string[] = data.unidades;
-  let pdms: string[] = data.pdms;
-  let classes: string[] = data.classes;
-  // let descricoes: string[] = data.descricoes;
-  let totalRows: number = parseInt(data.totalRows)  || 0;
-  let completed: boolean = (totalRows < 2);
-  let codigobr: string = "";
-  let descricao: string = "";
-  let classe: string = "";
-  let unidade: string = "";
-  let pdm: string = "";
-  let query: string = "";
-  let mounted:boolen = false;
-  onMount(() => {
-    mounted = true;
-  });
-
-  const  reload = async(state:State)=>{
-    console.log('RELOADING...', state)
-    // const url = new URL($page.url);
-    // url.searchParams.set('skip', state.offset.toString());
-    // url.searchParams.set('limit', state.rowsPerPage.toString());
-    // if (state.search) url.searchParams.set('query', state.search);
-    // state.filters?.forEach( (filter) => {
-    //   console.log('never here')
-    //   if ((filter.filterBy != "codigobr") || (String(filter.value).length >6 ))
-    //   { url.searchParams.set(String(filter.filterBy), String(filter.value));}
-    // })
-    // await goto(url);
-    //
-    changeUrl(codigobr, unidade, classe, pdm, query, descricao, mounted, completed)
-    return data.materials;
+  import MaterialTable from './material-table.svelte'
+  // import { browser } from '$app/environment'
+  import Filter from '$lib/components/filter.svelte'
+  import type { PageData } from '../$types'
+  import type { Material } from '@prisma/client'
+  import { page } from '$app/stores'
+  import { goto } from '$app/navigation'
+  // import { onMount } from 'svelte'
+  interface MaterialState {
+    materials: Material[]
+    unidades: string[]
+    classes: string[]
+    pdms: string[]
+    totalRows: number
+    filters: {
+      codigobr: string
+      descricao: string
+      classe: string
+      unidade: string
+      pdm: string
+      query: string
+      skip: number
+      take: number
+    }
   }
-  // Remover
-  const handler = new DataHandler(data.materials, {
-    rowsPerPage: 30,
-    totalRows: data.totalRows,
-    i18n: {
-            search: 'Buscar...',
-            show: 'Mostrar',
-            entries: 'registros',
-            filter: 'Filtrar',
-            rowCount: 'Mostrando {start} a {end} de {total} registros.',
-            noRows: 'Sem resultado',
-            previous: 'Anterior',
-            next: 'Próximo'
-        }
-      })
-  handler.onChange( (state: State) => reload(state) )
-  $: totalRows = data.totalRows;
-  $: totalRows? handler.setTotalRows(totalRows): null;
-  const  rows = handler?.getRows();
-  const ThStyle = "sticky top-0 h-10 border-top-1 px-2 text-left align-middle font-medium bg-slate-100"
-  const TfStyle = "sticky bottom-0 h-10 px-2 text-left align-middle font-medium bg-slate-100 z-20"
-  const TdStyle = "text-xs p-2 align-middle tabular-nums font-mono"
+  export let data: MaterialState
+
+  $: console.log({ urlParams })
+  $: console.log({materials})
+  $: materials = data?.materials
+  $: unidades = data?.unidades
+  $: classes = data?.classes
+  $: pdms = data?.pdms
+  $: totalRows = data?.totalRows || 0
+  $: selected = totalRows === 1
+
+  $: codigobr = data?.filters?.codigobr
+  $: descricao = data?.filters?.descricao
+  $: classe = data?.filters?.classe
+  $: unidade = data?.filters?.unidade
+  $: pdm = data?.filters?.pdm
+  $: query = data?.filters?.query
+  $: skip = data?.filters?.skip || 0
+  $: take = data?.filters?.take || 30
+
+  $: urlParams = Object.fromEntries(Array.from($page.url.searchParams))
+  // filters without undefined key, values
+  $: filters = Object.fromEntries(
+    Object.entries(data?.filters || { skip, take }).filter(
+      ([key, value]) => !!value,
+    ),
+  )
+
+  function areParamsEqual(params1: Object, params2: Object) {
+    return (
+      Object.keys(params1).length === Object.keys(params2).length &&
+      Object.keys(params1).every(
+        (key) => String(params1[key]) === String(params2[key]),
+      )
+    )
+  }
+  $: console.log({ filters })
+  $: loaded = browser && materials?.length > 0
+  // $: if (loaded) {
+  //   // Update state by changing url
+  //   console.log('lets update url')
+  //   const url = $page.url
+  //   console.log('URL:', url.searchParams.toString().trim())
+  //   console.log({ materials, filters })
+  //   console.log('FILTERS:', filters)
+  //   //check the change with the last state to see if needs to update url
+  //   if (url.searchParams.get('descricao'.trim()) != descricao.trim()) {
+  //     url.searchParams.set('descricao', descricao.trim())
+  //     goto(url)
+  //   }
+  //   if (
+  //     codigobr &&
+  //     url.searchParams.get('codigobr').trim() != codigobr.trim()
+  //   ) {
+  //     url.searchParams.set('codigobr', codigobr.trim())
+  //     goto(url)
+  //   }
+  //   let changed = false
+  //   const otherFilters = { classe, unidade, pdm, query, skip }
+  //   Object.entries(otherFilters).forEach(([param, value]) => {
+  //     if (value && url.searchParams.get(param)?.trim() != value) {
+  //       url.searchParams.set(param, value.toString().trim())
+  //       changed = true
+  //       console.log('changed!', { param, value })
+  //     }
+  //   })
+  //   if (changed) goto(url)
+  // }
+
+  const handleTableChange = async(event: CustomEvent) => {
+    let { skip } = event?.detail
+    const url = $page.url
+    url.searchParams.set('skip', skip)
+    await goto(url)
+  }
+  // const handleTableChange = async (state: TableState) => {
+  //   skip = state.offset;
+  //   take = state.rowsPerPage;
+  // };
 </script>
 
-<div class= "flex items-start h-14 space-x-4 p-4">
-  <Filter bind:value={classe} title="Classe" filterBy="classe" options={classes}/>
-  <Filter {handler} title="Padrão" filterBy="pdm" options = {pdms}/>
-  <Input class="w-32 h-8  font-mono slashed-zero placeholder:font-sans" bind:value={codigobr} placeholder={codigobr? codigobr: 'Código Material'} />
-  <Input class="w-full h-8" bind:value={descricao} placeholder={descricao? descricao: 'Descrição'}/>
-  <Filter {handler} title="Unidade" filterBy="unidade" options = {unidades}/>
-</div>
-<div class="flex flex-col h-[600px]">
-  <div class="flex-grow overflow-y-auto">
-<Datatable {handler} search={false}>
-  <table class="w-full caption-bottom text-sm border-separate relative">
-    <thead class="start-0">
-      <tr>
-        <th class={ThStyle}>Classe</th>
-        <th class={ThStyle}>Padrão</th>
-        <th class={ThStyle}>Material</th>
-        <th class={ThStyle}>Descricao</th>
-        <th class={ThStyle}>Unidade</th>
-      </tr>
-      <!-- <tr>
-        <ThFilter {handler} filterBy="classe" />
-        <ThFilter {handler} filterBy="pdm" />
-        <ThFilter {handler} filterBy="codigobr" />
-        <ThFilter {handler} filterBy="descricao" />
-        <ThFilter {handler} filterBy="unidade" />
-      </tr> -->
-    </thead>
-    <!-- <tbody class='tabular-nums  text-sm font-mono slashed-zero'> -->
-    <tbody>
-      {#each $rows as row}
-        <tr
-          class="px-2 text-left align-middle font-medium text-muted-foreground  even:bg-blue-50 odd:bg-white"
-        >
-          <td class={TdStyle}>{toTitleCase(row.classe)}</td>
-          <td class={TdStyle}>{toTitleCase(row.pdm)}</td>
-          <td class={TdStyle}>{row.codigobr}</td>
-          <td class={TdStyle}>{toTitleCase(row.descricao)}</td>
-          <td class={TdStyle}>{toTitleCase(row.unidade)}</td>
-        </tr>
-      {/each}
-    </tbody>
-    <tfoot class="end-0 h-10 bg-slate-50">
-      <tr>
-        <th class={TfStyle}>Classe</th>
-        <th class={TfStyle}>Padrão</th>
-        <th class={TfStyle}>Material</th>
-        <th class={TfStyle}>Descricao</th>
-        <th class={TfStyle}>Unidade</th>
-      </tr>
-    </tfoot>
-  </table>
-</Datatable>
-</div>
-</div>
-<style>
-</style>
+<!-- <Card.Root class="w-full mb-10">
+  <Card.Header>
+    <Card.Title tag="h4">Selecionar Material e Unidade</Card.Title>
+    <Card.Description
+      >Escolha o material que quer comprar e a unidade de fornecimento desejada
+      para fazer pesquisa de preços.</Card.Description
+    >
+  </Card.Header>
+  <Card.Content>
+    <div class="flex items-start h-14 space-x-4 p-4">
+      <Filter bind:value={classe} title="Classe" options={classes} />
+      <Filter bind:value={pdm} title="Padrão" options={pdms} />
+      <Input
+        class="w-32 h-8  font-mono slashed-zero placeholder:font-sans"
+        bind:value={codigobr}
+        placeholder={codigobr ? codigobr : 'Código Material'}
+      />
+      <Input
+        class="w-full h-8"
+        bind:value={descricao}
+        placeholder={descricao ? descricao : 'Descrição'}
+      />
+      <Filter bind:value={unidade} title="Unidade" options={unidades} />
+    </div>
+  </Card.Content>
+</Card.Root> -->
+{#if filters}
+  <div class="flex flex-col h-[600px]">
+    <div class="flex-grow overflow-y-auto">
+      <MaterialTable
+        bind:table={materials}
+        {totalRows}
+        bind:skip
+        take={30}
+        on:click={handleTableChange}
+      />
+    </div>
+  </div>
+{/if}

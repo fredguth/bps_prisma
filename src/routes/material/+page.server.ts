@@ -3,18 +3,18 @@ import db from "$lib/server/prisma";
 import type { Material, PrismaPromise } from "@prisma/client";
 
 export const load = async ({ url }) => {
-  console.log("LOADING MATERIALS....");
-  const takes = 30;
-  const limitParam = url.searchParams.get("limit");
-  const skipParam = url.searchParams.get("skip");
-  const query = url.searchParams.get("q")?.toUpperCase();
-  const unidade = url.searchParams.get("unidade")?.toUpperCase();
-  const pdm = url.searchParams.get("pdm")?.toUpperCase();
-  const classe = url.searchParams.get("classe")?.toUpperCase();
-  const codigobr = url.searchParams.get("codigobr")?.toUpperCase();
-  const descricao = url.searchParams.get("descricao")?.toUpperCase();
-  const limit = codigobr ? 1 : limitParam ? parseInt(limitParam) : takes; // Default limit
-  const skip = skipParam ? parseInt(skipParam) : 0; // Default skip
+  console.log('LOADING MATERIALS....')
+  const takes = 30
+  const limitParam = url.searchParams.get('limit')
+  const skipParam = url.searchParams.get('skip')
+  const query = url.searchParams.get('q')?.toUpperCase()
+  const unidade = url.searchParams.get('unidade')?.toUpperCase()
+  const pdm = url.searchParams.get('pdm')?.toUpperCase()
+  const classe = url.searchParams.get('classe')?.toUpperCase()
+  const codigobr = url.searchParams.get('codigobr')?.toUpperCase()
+  const descricao = url.searchParams.get('descricao')?.toUpperCase()
+  const limit = codigobr ? 1 : limitParam ? parseInt(limitParam) : takes // Default limit
+  const skip = skipParam ? parseInt(skipParam) : 0 // Default skip
 
   console.log({
     descricao,
@@ -25,64 +25,68 @@ export const load = async ({ url }) => {
     pdm,
     limit,
     skip,
-  });
+  })
   // Construct the where clause dynamically based on provided query parameters
   const whereClause = {
     disponivel: 1,
-    ...(query && { descricao: { contains: query, mode: "insensitive" } }),
+    ...(query && { descricao: { contains: query, mode: 'insensitive' } }),
     ...(unidade && { unidade: { equals: unidade } }),
     ...(pdm && { pdm: { equals: pdm } }),
     ...(classe && { classe: { equals: classe } }),
     ...(codigobr && { codigobr: { equals: codigobr } }),
     ...(descricao && { descricao: { equals: descricao } }),
-  };
+  }
 
   // Perform the query with pagination
   const materials: PrismaPromise<Material[]> = db.material.findMany({
     where: whereClause,
     skip: skip,
     take: limit,
-  });
+  })
 
   // Perform the count query to get the total number of rows without limit
-  const totalRows = db.material.count({
+  const totalRows: PrismaPromise<number> = db.material.count({
     where: whereClause,
-  });
+  })
 
-
-  const unidades = db.material
+  const unidades: Promise<string[]> = db.material
     .findMany({
       select: { unidade: true },
-      distinct: ["unidade"],
+      distinct: ['unidade'],
       where: whereClause,
       take: 1000,
     })
-    .then((materials) => materials.map((material) => material.unidade));
+    .then((materials) => materials.map((material) => material.unidade))
 
-  const classes = db.material
+  const classes: Promise<string[]> = db.material
     .findMany({
       select: { classe: true },
-      distinct: ["classe"],
+      distinct: ['classe'],
       where: whereClause,
       take: 1000,
     })
-    .then((materials) => materials.map((material) => material.classe));
-  const pdms = db.material
+    .then((materials) => materials.map((material) => material.classe))
+  const pdms: Promise<string[]> = db.material
     .findMany({
       select: { pdm: true },
-      distinct: ["pdm"],
+      distinct: ['pdm'],
       where: whereClause,
       take: 1000,
     })
-    .then((materials) => materials.map((material) => material.pdm));
-  // const descricoes = db.material
-  //   .findMany({
-  //     select: { descricao: true },
-  //     distinct: ["descricao"],
-  //     where: whereClause,
-  //     take: 1000,
-  //   })
-  // .then((materials) => materials.map((material) => material.descricao));
-
-  return { materials, unidades, classes, pdms, totalRows };
+    .then((materials) => materials.map((material) => material.pdm))
+  return {
+    materials,
+    unidades,
+    classes,
+    pdms,
+    totalRows,
+    codigobr,
+    descricao,
+    classe,
+    unidade,
+    pdm,
+    query,
+    skip,
+    take: limit,
+  }
 };
