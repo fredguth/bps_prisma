@@ -18,7 +18,7 @@
 	const handleChange = (event: CustomEvent) => {
 		let { page } = event?.detail
 		skip = (page - 1) * take
-		dispatch('click', { skip })
+		dispatch('change', { skip })
 	}
 
 	const ThStyle =

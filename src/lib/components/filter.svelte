@@ -5,13 +5,19 @@
   import { PlusCircled, Check } from "radix-icons-svelte";
   import { Button } from "$lib/components/ui/button";
   import { filterByQuery, toTitleCase, runCommand, throttle } from "$lib/utils";
+  import { createEventDispatcher } from 'svelte'
+	const dispatch = createEventDispatcher()
 
   export let options: string[] = [];
   export let title: string = "Title";
+  export let filterBy: string = '';
   export let value: string = "";
   export let query: string = "";
   let open = false;
 
+  $: {//effect
+    dispatch('change', { [filterBy]: value })
+  }
   $: filtered = options ? filterByQuery(options, query) : [];
 </script>
 
