@@ -27,10 +27,10 @@
 	$: material = data?.material
 	$: materials = [material]
 	$: rows = data?.itens
-	$: totalRows = data?.totalRows || 0
+	$: totalRows = data?.precos?.length || 0
 	$: console.log({ precos: data?.precos })
 	$: take = data?.take
-	$: console.log('ROWS ROWS:', { rows })
+
 
 	const handleChange = (event: CustomEvent) => {
 		let { skip } = event?.detail
@@ -51,7 +51,7 @@
 
 <Card.Root class="w-full mb-10">
 	<Card.Header>
-		<Card.Title tag="h4">Material selecionado:</Card.Title>
+		<Card.Title tag="h4">Há {totalRows} registros de preço do material selecionado:</Card.Title>
 	</Card.Header>
 	<Card.Content>
 		<MaterialTable table={materials} totalRows=1 />
@@ -59,7 +59,7 @@
 		<Button class="w-full mt-10" href={`/material/`}>Alterar Material</Button>
 	</Card.Content>
 </Card.Root>
-
+{#if totalRows}
 <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-6">
 	<Card.Root>
 		<Card.Header
@@ -111,7 +111,7 @@
 	</Card.Root>
 </div>
 <Histogram data={data?.precos} />
-{#if totalRows}
+
 	<div class="flex flex-col max-h-[600px] mt-8">
 		<div class="flex-grow overflow-y-auto">
 			<ItensTable

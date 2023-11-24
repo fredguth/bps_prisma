@@ -139,7 +139,7 @@
 
 {#if totalRows}
 
-<div class="max-h-[800px] overflow-y-auto">
+<div class="max-h-[50vh] overflow-y-auto">
 
 		<MaterialTable
 			table={materials}
