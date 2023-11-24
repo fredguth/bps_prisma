@@ -1,16 +1,16 @@
 generator client {
   provider        = "prisma-client-js"
-  // previewFeatures = ["driverAdapters"]
+  previewFeatures = ["views"]
 }
+
 generator docs {
   provider = "node node_modules/prisma-docs-generator"
-  output = "../docs"
+  output   = "../docs"
 }
 
 datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
-  // url      = "file:./dev.db"
 }
 
 model Compra {
@@ -27,7 +27,6 @@ model Compra {
 model Produto {
   id              Int      @id @unique @default(autoincrement())
   cnpj_fabricante String
-  fabricante      PJ       @relation(references: [cnpj], fields: [cnpj_fabricante], onDelete: Cascade)
   nome            String
   susbstancia     String
   embalagem       String
@@ -36,27 +35,28 @@ model Produto {
   qtd_embalagem   Int
   registro_anvisa String
   material_id     Int
-  material        Material @relation(references: [id], fields: [material_id], onDelete: Cascade)
   Item            Item[]
+  material        Material @relation(fields: [material_id], references: [id], onDelete: Cascade)
+  fabricante      PJ       @relation(fields: [cnpj_fabricante], references: [cnpj], onDelete: Cascade)
 }
 
 model Item {
   id              Int      @id @default(autoincrement())
   compra_id       Int
-  compra          Compra   @relation(fields: [compra_id], references: [id], onDelete: Cascade)
   codigobr        String
   unidade         String
   anvisa          String?
   cnpj_fornecedor String
-  fornecedor      PJ       @relation(name: "Fornecedor", fields: [cnpj_fornecedor], references: [cnpj], onDelete: Cascade)
   cnpj_fabricante String
-  fabricante      PJ       @relation(name: "Fabricante", fields: [cnpj_fabricante], references: [cnpj], onDelete: Cascade)
   qtd_item        Int
   valor_item      Float
   material_id     Int
-  material        Material @relation(fields: [material_id], references: [id], onDelete: Cascade)
   produto_id      Int
   produto         Produto  @relation(fields: [produto_id], references: [id], onDelete: Cascade)
+  material        Material @relation(fields: [material_id], references: [id], onDelete: Cascade)
+  fabricante      PJ       @relation("Fabricante", fields: [cnpj_fabricante], references: [cnpj], onDelete: Cascade)
+  fornecedor      PJ       @relation("Fornecedor", fields: [cnpj_fornecedor], references: [cnpj], onDelete: Cascade)
+  compra          Compra   @relation(fields: [compra_id], references: [id], onDelete: Cascade)
 }
 
 model PJ {
@@ -65,8 +65,8 @@ model PJ {
   ibge            String
   municipio       String
   uf              String
-  fornecedorItems Item[]    @relation(name: "Fornecedor")
-  fabricanteItems Item[]    @relation(name: "Fabricante")
+  fabricanteItems Item[]    @relation("Fabricante")
+  fornecedorItems Item[]    @relation("Fornecedor")
   Produto         Produto[]
 }
 
@@ -78,8 +78,8 @@ model Material {
   pdm        String
   descricao  String
   disponivel Int       @default(dbgenerated("true"))
-  Produto    Produto[]
   Item       Item[]
+  Produto    Produto[]
 }
 
 model User {
@@ -97,7 +97,7 @@ model Session {
   user_id        String
   active_expires BigInt
   idle_expires   BigInt
-  user           User   @relation(references: [id], fields: [user_id], onDelete: Cascade)
+  user           User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@index([user_id])
 }
@@ -106,7 +106,22 @@ model Key {
   id              String  @id @unique
   hashed_password String?
   user_id         String
-  user            User    @relation(references: [id], fields: [user_id], onDelete: Cascade)
+  user            User    @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@index([user_id])
+}
+
+view ItensCompra {
+  item_id         Int      @unique
+  compra_id       Int
+  data            DateTime
+  material_id     Int
+  produto_id      Int
+  anvisa          String?
+  cnpj_fornecedor String?
+  cnpj_fabricante String?
+  fabricante      String?
+  fornecedor      String?
+  qtde            Int
+  valor_unitario  Float
 }
