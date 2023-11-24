@@ -16,6 +16,9 @@
 	$: handler.setRows(table)
 	$: rows = handler.getRows()
 	$: selected = totalRows < 2
+	$: pageNumber = (skip - (skip % take)) / take + 1 || 0
+	$: pageCount = (totalRows - (totalRows % take)) / take + 1 || 0
+
 
 	const handleChange = (event: CustomEvent) => {
 		let { page } = event?.detail

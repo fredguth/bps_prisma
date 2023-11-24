@@ -24,6 +24,7 @@
 	$: pageNumber = (skip - (skip % take)) / take + 1 || 0
 	$: pageCount = (totalRows - (totalRows % take)) / take + 1 || 0
 	$: pagesShowing = getPagesShowing(pageNumber, pageCount)
+
 	function getPagesShowing(pageNumber: number, pageCount: number) {
 		let min = Math.max(1, pageNumber - 4)
 		let max = Math.min(pageCount, pageNumber + 4)
@@ -54,9 +55,9 @@
 
 <section bind:clientWidth class={$$props.class ?? ''}>
 	<!-- <article bind:this={element} style="height:calc(100% - {height}px)">
-		<slot />
+
 	</article> -->
-	<slot/>
+	<slot />
 	{#if !selected}
 		<footer class:container={true}>
 			<aside>
@@ -106,11 +107,11 @@
 
 	header,
 	footer {
-		background-color: white;
-		bottom: 0;
-		position: sticky;
-		min-height: 10px;
+		min-height: 8px;
 		padding: 0 16px;
+		position: sticky;
+		background: white;
+		bottom: 0;
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
