@@ -3,21 +3,28 @@ import type { PageServerLoad } from '../$types'
 
 let id: string = ''
 export const load = (async ({ params, url }) => {
-	console.log('LOADING ITEMS....')
 	// @ts-ignore
 	const { id } = params
+	console.log('LOADING ITEMS....', id)
 	const skip = parseInt(url.searchParams.get('skip') || '0')
 	const material = await db.material.findFirst({
 		where: {
 			id: parseInt(id),
 		},
 	})
-	const totalRows: PrismaPromise<number> = db.itensCompra.count({})
+	const totalRows: PrismaPromise<number> = db.itensCompra.count({
+		where: {
+			material_id: parseInt(id),
+		},
+	})
 
 	const precos = db.itensCompra
 		.findMany({
 			select: {
 				valor_unitario: true,
+			},
+			where: {
+				material_id: parseInt(id),
 			},
 			orderBy: {
 				valor_unitario: 'desc',
@@ -33,6 +40,9 @@ export const load = (async ({ params, url }) => {
 			fornecedor: true,
 			qtde: true,
 			valor_unitario: true,
+		},
+		where: {
+			material_id: parseInt(id),
 		},
 		orderBy: {
 			data: 'desc',

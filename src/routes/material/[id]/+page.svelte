@@ -39,6 +39,7 @@
 		goto(url, { replaceState: true, invalidateAll: true })
 	}
 
+
 	const ptBRFormat = formatLocale({
     decimal: ",",
     thousands: ".",

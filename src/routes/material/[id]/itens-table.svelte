@@ -66,7 +66,7 @@
 			{/each}
 		</tbody>
 
-		<tfoot class="sticky bottom-10 h-10 bg-slate-50 z-50">
+		<tfoot class="sticky bottom-12 h-8 bg-slate-50 z-50">
 			<tr>
 				<th class="${ThStyle} ">Data</th>
 				<th class="${ThStyle} ">Anvisa</th>
