@@ -1,6 +1,8 @@
 <script lang="ts">
 	import ItensTable from './itens-table.svelte'
 	import MaterialTable from '../material-table.svelte'
+	import { median, min, max, mean } from 'd3'
+	import {formatLocale} from 'd3-format'
 	import {
 		ArrowDownToLine as MinPrice,
 		ArrowUpToLine as MaxPrice,
@@ -19,6 +21,7 @@
 	import { debounce } from '$lib/utils'
 	import Histogram from './histogram.svelte'
 
+
 	export let data: PageData
 
 	$: material = data?.material
@@ -35,6 +38,14 @@
 		url.searchParams.set('skip', skip)
 		goto(url, { replaceState: true, invalidateAll: true })
 	}
+
+	const ptBRFormat = formatLocale({
+    decimal: ",",
+    thousands: ".",
+    grouping: [3],
+    currency: ["R$", ""]
+  });
+  const formatPrice = ptBRFormat.format("$,.4f");
 </script>
 
 <Card.Root class="w-full mb-10">
@@ -42,7 +53,7 @@
 		<Card.Title tag="h4">Material selecionado:</Card.Title>
 	</Card.Header>
 	<Card.Content>
-		<MaterialTable table={materials} totalRows="1" />
+		<MaterialTable table={materials} totalRows=1 />
 
 		<Button class="w-full mt-10" href={`/material/`}>Alterar Material</Button>
 	</Card.Content>
@@ -57,7 +68,7 @@
 			<MinPrice class="h-4 w-4 text-muted-foreground" />
 		</Card.Header>
 		<Card.Content>
-			<div class="text-2xl font-bold">R$ 0,0234</div>
+			<div class="text-2xl font-bold">{formatPrice(min(data?.precos))}</div>
 			<!-- <p class="text-xs text-muted-foreground">+19% from last month</p> -->
 		</Card.Content>
 	</Card.Root>
@@ -69,7 +80,7 @@
 			<MdnPrice class="h-4 w-4 text-muted-foreground" />
 		</Card.Header>
 		<Card.Content>
-			<div class="text-2xl font-bold">R$ 0,1144</div>
+			<div class="text-2xl font-bold">{formatPrice(median(data?.precos))}</div>
 			<!-- <p class="text-xs text-muted-foreground">+201 since last hour</p> -->
 		</Card.Content>
 	</Card.Root>
@@ -81,7 +92,7 @@
 			<AvgPrice class="h-4 w-4 text-muted-foreground" />
 		</Card.Header>
 		<Card.Content>
-			<div class="text-2xl font-bold">R$ 0,1534</div>
+			<div class="text-2xl font-bold">{formatPrice(mean(data?.precos))}</div>
 			<p class="text-xs text-muted-foreground">* Média ponderada</p>
 		</Card.Content>
 	</Card.Root>
@@ -93,7 +104,7 @@
 			<MaxPrice class="h-4 w-4 text-muted-foreground" />
 		</Card.Header>
 		<Card.Content>
-			<div class="text-2xl font-bold">R$ 0,3210</div>
+			<div class="text-2xl font-bold">{formatPrice(max(data?.precos))}</div>
 			<!-- <p class="text-xs text-muted-foreground">+201 since last hour</p> -->
 		</Card.Content>
 	</Card.Root>
