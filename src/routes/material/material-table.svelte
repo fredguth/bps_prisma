@@ -7,13 +7,14 @@
 	import type { Material } from '@prisma/client'
 
 	export let table: Material[]
-	export let totalRows: number
-	export let skip: number
-	export let take: number
+	export let totalRows: number = 0
+	export let skip: number = 0
+	export let take: number = 0
 
 	const handler = new DataHandler(table, { rowsPerPage: take })
-  $: handler.setRows(table)
-  $: rows = handler.getRows()
+	$: handler.setRows(table)
+	$: rows = handler.getRows()
+	$: selected = totalRows < 2
 
 	const handleChange = (event: CustomEvent) => {
 		let { page } = event?.detail
@@ -52,14 +53,16 @@
 				</tr>
 			{/each}
 		</tbody>
-		<tfoot class="end-0 h-10 bg-slate-50">
-			<tr>
-				<th class={TfStyle}>Classe</th>
-				<th class={TfStyle}>Padrão</th>
-				<th class={TfStyle}>Material</th>
-				<th class={TfStyle}>Descricao</th>
-				<th class={TfStyle}>Unidade</th>
-			</tr>
-		</tfoot>
+		{#if !selected}
+			<tfoot class="end-0 h-10 bg-slate-50">
+				<tr>
+					<th class={TfStyle}>Classe</th>
+					<th class={TfStyle}>Padrão</th>
+					<th class={TfStyle}>Material</th>
+					<th class={TfStyle}>Descricao</th>
+					<th class={TfStyle}>Unidade</th>
+				</tr>
+			</tfoot>
+		{/if}
 	</table>
 </Datatable>
