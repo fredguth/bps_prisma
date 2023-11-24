@@ -59,7 +59,7 @@
 	</article> -->
 	<slot />
 	{#if !selected}
-		<footer class:container={true}>
+		<footer class:container={false} class="h-12 z-100">
 			<aside>
 				{#if totalRows > 0}
 					Mostrando <span class="font-family:system-ui px-1 font-medium"
