@@ -32,7 +32,7 @@
 
 <Datatable {handler} {take} {skip} {totalRows} on:click={handleChange}>
 	<table class="w-full caption-bottom text-sm border-separate relative">
-		<thead class="start-0">
+		<thead class="sticky top-0 h-10 bg-slate-50 z-50">
 			<tr>
 				<th class="${ThStyle}">Data</th>
 				<th class="${ThStyle}">Anvisa</th>
@@ -66,7 +66,7 @@
 			{/each}
 		</tbody>
 
-		<tfoot class="end-0 h-10 bg-slate-50">
+		<tfoot class="sticky bottom-10 h-10 bg-slate-50 z-50">
 			<tr>
 				<th class="${ThStyle} ">Data</th>
 				<th class="${ThStyle} ">Anvisa</th>

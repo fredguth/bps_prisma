@@ -29,6 +29,7 @@
 	$: pdm = data?.filters?.pdm || ''
 	$: query = data?.filters?.query || ''
 	$: skip = data?.filters?.skip || 0
+	$: take = data?.filters?.take || 0
 
 	const handleClick = () => {
 		if (codigobr || descricao) {
@@ -136,17 +137,20 @@
 	</Card.Content>
 </Card.Root>
 
-<div class="flex flex-col max-h-[600px]">
-	<div class="flex-grow overflow-y-auto">
+{#if totalRows}
+
+<div class="max-h-[800px] overflow-y-auto">
+
 		<MaterialTable
 			table={materials}
 			{totalRows}
-			skip={skip || 0}
-			take={30}
+			{skip}
+			{take}
 			on:change={handleChange}
 		/>
-	</div>
+
 </div>
+{/if}
 {#if selected}
 <Button class="w-full mt-10" href= {`/material/${material.id}`}>
 	Consultar Preços

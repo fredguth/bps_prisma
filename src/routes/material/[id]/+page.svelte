@@ -35,17 +35,17 @@
 		<Card.Title tag="h4">Material selecionado:</Card.Title>
 	</Card.Header>
 	<Card.Content>
-		<div class="flex flex-col">
-			<div class="flex-grow overflow-y-auto">
+
+
 				<MaterialTable table={materials} totalRows="1" />
-			</div>
-		</div>
+
+
 		<Button class="w-full mt-10" href={`/material/`}>Alterar Material</Button>
 	</Card.Content>
 </Card.Root>
-<Histogram data= {data?.precos} />
+<Histogram data= {data?.precos}/>
 {#if totalRows}
-	<div class="flex flex-col max-h-[600px]">
+	<div class="flex flex-col max-h-[600px] mt-8">
 		<div class="flex-grow overflow-y-auto">
 			<ItensTable bind:table={rows} totalRows={totalRows} skip={0} take={take}
       on:change={handleChange}

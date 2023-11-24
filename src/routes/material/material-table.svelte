@@ -5,6 +5,7 @@
 	import { createEventDispatcher } from 'svelte'
 	const dispatch = createEventDispatcher()
 	import type { Material } from '@prisma/client'
+	import { goto } from '$app/navigation'
 
 	export let table: Material[]
 	export let totalRows: number = 0
@@ -23,15 +24,15 @@
 	}
 
 	const ThStyle =
-		'sticky top-0 h-10 border-top-1 px-2 text-left align-middle font-medium bg-slate-100'
+		'h-10 border-top-1 px-2 text-left align-middle font-medium bg-slate-100'
 	const TfStyle =
-		'sticky bottom-0 h-10 px-2 text-left align-middle font-medium bg-slate-100 z-20'
+		'h-10 px-2 text-left align-middle font-medium bg-slate-100 z-20'
 	const TdStyle = 'text-xs p-2 align-middle tabular-nums font-mono'
 </script>
 
 <Datatable {handler} {take} {skip} {totalRows} on:click={handleChange}>
 	<table class="w-full caption-bottom text-sm border-separate relative">
-		<thead class="sticky start-0">
+		<thead class="sticky top-0 h-10 bg-slate-50 z-50">
 			<tr>
 				<th class="${ThStyle} lg:w-62">Classe</th>
 				<th class="${ThStyle} lg:w-28">Padrão</th>
@@ -40,10 +41,13 @@
 				<th class="${ThStyle} lg:w-32">Unidade</th>
 			</tr>
 		</thead>
-		<tbody>
+		<tbody class="overflow-y-auto">
 			{#each $rows as row}
 				<tr
-					class="px-2 text-left align-middle font-medium text-muted-foreground even:bg-blue-50 odd:bg-white"
+					class="px-2 text-left align-middle font-medium text-muted-foreground even:bg-blue-50 odd:bg-white cursor-pointer hover:bg-blue-100"
+					on:click={() => {
+						goto(`/material/${row.id}`)
+					}}
 				>
 					<td class={TdStyle}>{toTitleCase(row.classe)}</td>
 					<td class={TdStyle}>{toTitleCase(row.pdm)}</td>
@@ -54,7 +58,7 @@
 			{/each}
 		</tbody>
 		{#if !selected}
-			<tfoot class="sticky end-0 h-10 bg-slate-50">
+			<tfoot class="sticky bottom-10 h-10 bg-slate-50 z-50">
 				<tr>
 					<th class={TfStyle}>Classe</th>
 					<th class={TfStyle}>Padrão</th>
@@ -66,12 +70,3 @@
 		{/if}
 	</table>
 </Datatable>
-<!-- table {
-    border-collapse: separate;
-    border-spacing: 0;
-}
-
-thead {
-    position: sticky;
-    inset-block-start: 0; -->
-}

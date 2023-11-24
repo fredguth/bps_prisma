@@ -53,9 +53,10 @@
 </script>
 
 <section bind:clientWidth class={$$props.class ?? ''}>
-	<article bind:this={element} style="height:calc(100% - {height}px)">
+	<!-- <article bind:this={element} style="height:calc(100% - {height}px)">
 		<slot />
-	</article>
+	</article> -->
+	<slot/>
 	{#if !selected}
 		<footer class:container={true}>
 			<aside>
@@ -105,7 +106,10 @@
 
 	header,
 	footer {
-		min-height: 8px;
+		background-color: white;
+		bottom: 0;
+		position: sticky;
+		min-height: 10px;
 		padding: 0 16px;
 		display: flex;
 		justify-content: space-between;
