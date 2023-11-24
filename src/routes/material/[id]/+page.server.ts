@@ -14,6 +14,17 @@ export const load = (async ({ params, url }) => {
 	})
 	const totalRows: PrismaPromise<number> = db.itensCompra.count({})
 
+	const precos = db.itensCompra
+		.findMany({
+			select: {
+				valor_unitario: true,
+			},
+			orderBy: {
+				valor_unitario: 'desc',
+			},
+		})
+		.then((items) => items.map((item) => item.valor_unitario))
+
 	const itens = await db.itensCompra.findMany({
 		select: {
 			data: true,
@@ -30,5 +41,5 @@ export const load = (async ({ params, url }) => {
 		take: 20,
 	})
 	// console.log({ itens, totalRows, material })
-	return { itens, material, totalRows, take: 20 }
+	return { itens, material, totalRows, precos, take: 20 }
 }) satisfies PageServerLoad

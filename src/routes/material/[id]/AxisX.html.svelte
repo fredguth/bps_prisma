@@ -2,7 +2,7 @@
   @component
   Generates an HTML x-axis, useful for server-side rendered charts.  This component is also configured to detect if your x-scale is an ordinal scale. If so, it will place the markers in the middle of the bandwidth.
  -->
-<script>
+ <script>
   import { getContext } from 'svelte';
 
   const { xScale } = getContext('LayerCake');
@@ -13,7 +13,7 @@
   /** @type {Boolean} [tickMarks=false] - Show a vertical mark for each tick. */
   export let tickMarks = false;
 
-  /** @type {Boolean} [baseline=false]  Show a solid line at the bottom. */
+  /** @type {Boolean} [baseline=false] – Show a solid line at the bottom. */
   export let baseline = false;
 
   /** @type {Boolean} [snapTicks=false] - Instead of centering the text on the first and the last items, align them to the edges of the chart. */

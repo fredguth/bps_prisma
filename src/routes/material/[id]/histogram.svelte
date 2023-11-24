@@ -4,17 +4,18 @@
   import { scaleBand } from 'd3-scale';
   import { format } from 'd3-format';
 
-  import Column from './_components/Column.svelte';
-  import AxisX from './_components/AxisX.html.svelte';
-  import AxisY from './_components/AxisY.html.svelte';
+  import Column from './Column.svelte';
+  import AxisX from './AxisX.html.svelte';
+  import AxisY from './AxisY.html.svelte';
 
-  import calcThresholds from './_modules/calcThresholds.js';
+  import calcThresholds from './calcThresholds.js';
 
-  import data from './_data/unemployment.js';
+  export let data;
+
 
   const f = format('.2f');
 
-  let binCount = 40;
+  let binCount = 100;
 
   const xKey = ['x0', 'x1'];
   const yKey = 'length';
@@ -46,7 +47,7 @@
   }
 </style>
 
-<div class="input-container" style="position: absolute;right:10px;z-index: 9;">
+<!-- <div class="input-container" style="position: absolute;right:10px;z-index: 9;">
   <input
     style="margin:0;"
     type="range"
@@ -55,7 +56,7 @@
     step="4"
     bind:value={binCount}
   /> <span class="counter-container" style="display:inline-block;vertical-align:top;width: 70px;text-align:right;">{binCount} bins</span>
-</div>
+</div> -->
 
 <div class="chart-container">
   <LayerCake

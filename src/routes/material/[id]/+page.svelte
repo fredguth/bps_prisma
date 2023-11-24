@@ -10,6 +10,7 @@
 	import { page } from '$app/stores'
 	import { goto } from '$app/navigation'
 	import { debounce } from '$lib/utils'
+	import Histogram from './histogram.svelte'
 
 	export let data: PageData
 
@@ -17,6 +18,7 @@
 	$: materials = [material]
 	$: rows = data?.itens
 	$: totalRows = data?.totalRows || 0
+	$: console.log({precos: data?.precos})
   $: take = data?.take
 	$: console.log('ROWS ROWS:', { rows })
 
@@ -41,9 +43,9 @@
 		<Button class="w-full mt-10" href={`/material/`}>Alterar Material</Button>
 	</Card.Content>
 </Card.Root>
-
+<Histogram data= {data?.precos} />
 {#if totalRows}
-	<div class="flex flex-col max-h-[1200px]">
+	<div class="flex flex-col max-h-[600px]">
 		<div class="flex-grow overflow-y-auto">
 			<ItensTable bind:table={rows} totalRows={totalRows} skip={0} take={take}
       on:change={handleChange}

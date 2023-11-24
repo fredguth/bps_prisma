@@ -31,7 +31,7 @@
 
 <Datatable {handler} {take} {skip} {totalRows} on:click={handleChange}>
 	<table class="w-full caption-bottom text-sm border-separate relative">
-		<thead class="start-0">
+		<thead class="sticky start-0">
 			<tr>
 				<th class="${ThStyle} lg:w-62">Classe</th>
 				<th class="${ThStyle} lg:w-28">Padrão</th>
@@ -54,7 +54,7 @@
 			{/each}
 		</tbody>
 		{#if !selected}
-			<tfoot class="end-0 h-10 bg-slate-50">
+			<tfoot class="sticky end-0 h-10 bg-slate-50">
 				<tr>
 					<th class={TfStyle}>Classe</th>
 					<th class={TfStyle}>Padrão</th>
@@ -66,3 +66,12 @@
 		{/if}
 	</table>
 </Datatable>
+<!-- table {
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+thead {
+    position: sticky;
+    inset-block-start: 0; -->
+}

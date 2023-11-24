@@ -18,6 +18,11 @@
     "@prisma/client": "^5.6.0",
     "@types/node": "20.9.2",
     "@vercel/edge": "^1.1.1",
+    "d3": "^7.8.5",
+    "d3-array": "^3.2.4",
+    "d3-format": "^3.1.0",
+    "d3-scale": "^4.0.2",
+    "layercake": "^8.0.2",
     "svelte-headlessui": "^0.0.32"
   },
   "devDependencies": {
@@ -26,6 +31,7 @@
     "@sveltejs/adapter-auto": "^2.0.0",
     "@sveltejs/kit": "^1.27.4",
     "@tanstack/svelte-table": "^8.10.7",
+    "@types/d3": "^7.4.3",
     "@vincjo/datatables": "^1.14.0",
     "autoprefixer": "^10.4.14",
     "bits-ui": "^0.9.8",

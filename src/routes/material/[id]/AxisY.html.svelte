@@ -2,7 +2,7 @@
   @component
   Generates an HTML y-axis.
  -->
-<script>
+ <script>
   import { getContext } from 'svelte';
 
   const { padding, xRange, yScale } = getContext('LayerCake');
@@ -13,7 +13,7 @@
   /** @type {Boolean} [tickMarks=false] - Show a vertical mark for each tick. */
   export let tickMarks = false;
 
-  /** @type {Boolean} [baseline=false]  Show a solid line at the bottom. */
+  /** @type {Boolean} [baseline=false] – Show a solid line at the bottom. */
   export let baseline = false;
 
   /** @type {Function} [formatTick=d => d] - A function that passes the current tick value and expects a nicely formatted value in return. */
