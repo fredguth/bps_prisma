@@ -27,6 +27,7 @@ export const load = async ({ url }) => {
 		skip,
 	})
 	// Construct the where clause dynamically based on provided query parameters
+
 	const whereClause = {
 		disponivel: 1,
 		...(query && { descricao: { contains: query, mode: 'insensitive' } }),

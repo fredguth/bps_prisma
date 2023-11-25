@@ -8,7 +8,8 @@
 	import type { MaterialState } from './types'
 	import { page } from '$app/stores'
 	import { goto } from '$app/navigation'
-	import { debounce } from '$lib/utils'
+	import {normalizeQuery} from '$lib/utils'
+	import { debounce, filterByQuery } from '$lib/utils'
 
 	export let data: MaterialState
 	let codigobr = data?.filters?.codigobr || ''
@@ -38,6 +39,20 @@
 			handleChange({ detail: { descricao: '' } })
 			handleChange({ detail: { codigobr: '' } })
 		}
+	}
+
+	const handleQuery = () => {
+		debounce(() => {
+			const url = $page.url
+			url.searchParams.delete('skip')
+			url.searchParams.delete('take')
+			url.searchParams.delete('query')
+			if (query.length > 3) {
+				const q = normalizeQuery(query)
+				url.searchParams.set('query', q)
+			}
+			goto(url, { replaceState: true, invalidateAll: true })
+		}, 1000)()
 	}
 	const handleCodigo = () => {
 		// takes string codigo and turn into numbers only
@@ -156,10 +171,3 @@
 	Consultar Preços
 </Button>
 {/if}
-
-
-
-<!-- <Card.Root class="w-full mt-10">
-  <Card.Header>
-    <Card.Title tag="h4">Material selecionado:</Card.Title>
-  </Card.Header> -->

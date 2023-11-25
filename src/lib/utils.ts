@@ -61,6 +61,13 @@ export const flyAndScale = (
   };
 };
 
+export const normalizeQuery = (s: string) =>
+	s
+		.normalize('NFD')
+		.replace(/[\u0300-\u036f]/g, '')
+		.toLowerCase()
+		.replace(/\s+/g, '')
+
 export function filterByQuery(list: string[], query: string): string[] {
   // accent and space insensitive query
   // throttle(() => {

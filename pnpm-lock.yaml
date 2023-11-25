@@ -6,11 +6,11 @@ settings:
 
 dependencies:
   '@libsql/client':
-    specifier: ^0.4.0-pre.1
-    version: 0.4.0-pre.2
+    specifier: ^0.4.0-pre.3
+    version: 0.4.0-pre.3
   '@prisma/adapter-libsql':
     specifier: ^5.6.0
-    version: 5.6.0(@libsql/client@0.4.0-pre.2)
+    version: 5.6.0(@libsql/client@0.4.0-pre.3)
   '@prisma/client':
     specifier: ^5.6.0
     version: 5.6.0(prisma@5.6.0)
@@ -35,6 +35,9 @@ dependencies:
   layercake:
     specifier: ^8.0.2
     version: 8.0.2(svelte@4.2.7)(typescript@5.2.2)
+  libsql:
+    specifier: 0.2.0-pre.2
+    version: 0.2.0-pre.2
   svelte-headlessui:
     specifier: ^0.0.32
     version: 0.0.32
@@ -453,8 +456,8 @@ packages:
       '@jridgewell/sourcemap-codec': 1.4.15
     dev: true
 
-  /@libsql/client@0.4.0-pre.2:
-    resolution: {integrity: sha512-sKWNPU+RQoki5hEoYhpC+fQ/kj+VuwoSXF2PMYGWB19MYBkMaMc7udn1T0ibNjNkFNmd98HvPIHd48NNC2oWvA==}
+  /@libsql/client@0.4.0-pre.3:
+    resolution: {integrity: sha512-CO0gPdux7W8GE3hVOoH280HNChUW/9sScqQIRyHhMIs5KbdLAhFDNUOU4jTobhDMBVA6HTgNWjBcwl92xp+prQ==}
     dependencies:
       '@libsql/hrana-client': 0.5.5
       js-base64: 3.7.5
@@ -619,12 +622,12 @@ packages:
     resolution: {integrity: sha512-C16M+IYz0rgRhWZdCmK+h58JMv8vijAA61gmz2rspCSwKwzBebpdcsiUmwrtJRdphuY30i6BSLEOP8ppbNLyLg==}
     dev: true
 
-  /@prisma/adapter-libsql@5.6.0(@libsql/client@0.4.0-pre.2):
+  /@prisma/adapter-libsql@5.6.0(@libsql/client@0.4.0-pre.3):
     resolution: {integrity: sha512-XFDLw9QqEDDVXAe8YdX8TL4mCiolDijjxh8HQRJ33VcuujGnAWWpBKE35MKfIsuONVyNXFthB/Gky/MlmMcE6Q==}
     peerDependencies:
       '@libsql/client': ^0.3.5
     dependencies:
-      '@libsql/client': 0.4.0-pre.2
+      '@libsql/client': 0.4.0-pre.3
       '@prisma/driver-adapter-utils': 5.6.0
       async-mutex: 0.4.0
     transitivePeerDependencies:
