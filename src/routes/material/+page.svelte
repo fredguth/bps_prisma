@@ -8,11 +8,12 @@
 	import { page } from '$app/stores'
 	import { goto } from '$app/navigation'
 	import { normalizeQuery } from '$lib/utils'
+	import { tick } from 'svelte'
 	import { debounce } from '$lib/utils'
 	export let data: MaterialState
 	let codigobr = data?.filters?.codigobr || ''
 	let descricao = data?.filters?.descricao || ''
-	let query = data?.filters?.query
+	let query = data?.filters?.query || ''
 
 	$: materials = data?.materials
 	$: material = data?.materials[0]
@@ -44,37 +45,52 @@
 
 	const handleQuery = () => {
 		const url = $page.url
-		const q = url.searchParams.get('q') || ''
+		url.searchParams.delete('q')
+		url.searchParams.delete('skip')
+		url.searchParams.delete('take')
+		url.searchParams.delete('codigobr')
 		debounce(async () => {
-			if (query.length > 3 || query.length < q.length) {
-				const url = $page.url
-				url.searchParams.delete('skip')
-				url.searchParams.delete('take')
-				url.searchParams.delete('query')
-				// url.searchParams.set('query', normalizeQuery(query))
-				url.searchParams.set('q', query)
-				goto(url, { replaceState: true, invalidateAll: true })
-				await goto(url, { replaceState: true, invalidateAll: true })
-				document.getElementById('queryInput')?.focus()
-			}
-		}, 800)()
+			url.searchParams.set('q', query)
+			tick()
+				.then(() => goto(url, { replaceState: true, invalidateAll: true }))
+				.then(() => {
+					const el: HTMLInputElement = document?.getElementById(
+						'queryInput',
+					) as HTMLInputElement
+					if (el) {
+						el.focus()
+						el.setSelectionRange(query.length, query.length)
+					}
+				})
+		}, 200)()
 	}
 	const handleCodigo = () => {
 		// takes string codigo and turn into numbers only
 		codigobr = codigobr?.replace(/\D/g, '')
 		codigobr = codigobr?.slice(0, 7)
-
-		debounce(async () => {
+		if (codigobr.length > 0 && parseInt(codigobr)) {
 			const url = $page.url
 			url.searchParams.delete('codigobr')
-			if (codigobr.length > 0 && parseInt(codigobr)) {
+			url.searchParams.delete('q')
+			url.searchParams.delete('skip')
+			url.searchParams.delete('take')
+			debounce(async () => {
 				// format codigobr to a 7 digit string with padding left zeros
 				const formated = 'BR' + codigobr.padStart(7, '0')
 				url.searchParams.set('codigobr', formated)
-			}
-			await goto(url, { replaceState: true, invalidateAll: true })
-			document.getElementById('codigoInput')?.focus()
-		}, 800)()
+				tick()
+					.then(() => goto(url, { replaceState: true, invalidateAll: true }))
+					.then(() => {
+						const el: HTMLInputElement = document?.getElementById(
+							'codigoInput',
+						) as HTMLInputElement
+						if (el) {
+							el.focus()
+							el.setSelectionRange(codigobr.length, codigobr.length)
+						}
+					})
+			}, 1500)()
+		}
 	}
 	type withDetail = {
 		detail: Object
@@ -82,11 +98,11 @@
 	const handleChange = (event: withDetail) => {
 		const [key, value] = Object.entries(event.detail)[0]
 		const url = $page.url
-			url.searchParams.delete('skip')
-			url.searchParams.delete('take')
-			url.searchParams.delete('q')
-			url.searchParams.delete(key)
-			if (value) url.searchParams.set(key, String(value))
+		url.searchParams.delete('skip')
+		url.searchParams.delete('take')
+		url.searchParams.delete('q')
+		url.searchParams.delete(key)
+		if (value) url.searchParams.set(key, String(value))
 		goto(url, { replaceState: true, invalidateAll: true })
 	}
 </script>
@@ -122,7 +138,6 @@
 				placeholder={codigobr ? codigobr : 'Código Material'}
 				on:input={handleCodigo}
 				on:click={handleClick}
-				autofocus
 			/>
 			<Input
 				id="queryInput"
@@ -131,7 +146,6 @@
 				placeholder={descricao ? descricao : 'Descrição'}
 				on:input={handleQuery}
 				on:click={handleClick}
-				autofocus
 			/>
 			<Filter
 				value={unidade}
