@@ -57,7 +57,7 @@
 				await goto(url, { replaceState: true, invalidateAll: true })
 				document.getElementById('queryInput')?.focus()
 			}
-		}, 1500)()
+		}, 800)()
 	}
 	const handleCodigo = () => {
 		// takes string codigo and turn into numbers only
@@ -74,7 +74,7 @@
 			}
 			await goto(url, { replaceState: true, invalidateAll: true })
 			document.getElementById('codigoInput')?.focus()
-		}, 1500)()
+		}, 800)()
 	}
 	type withDetail = {
 		detail: Object
