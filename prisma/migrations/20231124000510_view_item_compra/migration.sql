@@ -3,9 +3,13 @@ SELECT
     item.id AS "item_id",
     item.compra_id,
     compra.data AS "data",
+    compra.cnpj_instituicao,
+    compra.instituicao,
+    compra.uf AS "uf",
     item.material_id,
     item.produto_id,
     item.anvisa,
+    produto.nome as produto,
     item.cnpj_fornecedor,
     item.cnpj_fabricante,
     PJFabricante.razao_social AS fabricante,
@@ -15,14 +19,18 @@ SELECT
 FROM
     item
 LEFT JOIN
-    (SELECT cnpj, razao_social FROM PJ) AS PJFabricante
+    PJ AS PJFabricante
 ON
     item.cnpj_fabricante = PJFabricante.cnpj
 LEFT JOIN
-    (SELECT cnpj, razao_social FROM PJ) AS PJFornecedor
+    PJ AS PJFornecedor
 ON
     item.cnpj_fornecedor = PJFornecedor.cnpj
 LEFT JOIN
-    (SELECT id, "data" FROM compra) AS compra
+    compra
 ON
-    item.compra_id = compra.id;
+    item.compra_id = compra.id
+LEFT JOIN
+    produto
+ON
+    item.produto_id = produto.id;

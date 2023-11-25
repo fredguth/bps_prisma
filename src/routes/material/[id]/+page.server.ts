@@ -36,6 +36,7 @@ export const load = (async ({ params, url }) => {
 		select: {
 			data: true,
 			anvisa: true,
+			produto: true,
 			fabricante: true,
 			fornecedor: true,
 			qtde: true,

@@ -118,6 +118,7 @@ view ItensCompra {
   material_id     Int
   produto_id      Int
   anvisa          String?
+  produto         String?
   cnpj_fornecedor String?
   cnpj_fabricante String?
   fabricante      String?

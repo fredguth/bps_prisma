@@ -15,6 +15,7 @@
   export let query: string = "";
   let open = false;
 
+  $: variant = value ? "outline" : "";
   $: {//effect
     dispatch('change', { [filterBy]: value })
   }
@@ -23,7 +24,8 @@
 
 <Popover.Root bind:open>
   <Popover.Trigger>
-    <Button variant="outline" size="sm" class="h-8 justify-left truncate">
+    <!-- <Button {variant} size="sm" class="h-8 justify-left truncate"> -->
+      <Button {variant} class="h-8">
       {#if value}
         <Check class="mr-2 h-4 w-4" />
         {value}

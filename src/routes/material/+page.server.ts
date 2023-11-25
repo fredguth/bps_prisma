@@ -30,7 +30,7 @@ export const load = async ({ url }) => {
 
 	const whereClause = {
 		disponivel: 1,
-		...(query && { descricao: { contains: query, mode: 'insensitive' } }),
+		...(query && { descricao: { contains: query } }),
 		...(unidade && { unidade: { equals: unidade } }),
 		...(pdm && { pdm: { equals: pdm } }),
 		...(classe && { classe: { equals: classe } }),

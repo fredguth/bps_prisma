@@ -5,8 +5,7 @@
 <header
   class="text-zinc-800 text-sm relative px-10 shadow-lg shadow-slate-100 h-20 p-4 w-full bg-white"
 >
-  <div class="flex container">
-    <!-- <button style="text-wrap: nowrap;" class="text-blue-800 items-center cursor-pointer text-lg font-semibold justify-center relative text-center inline-flex w-8 h-8 rounded-full"><i class="font-black"></i></button> -->
+  <a href="/material" class="flex container">
     <SVGImg data={logo} size={40} class="mx-4"/>
 
     <div>
@@ -18,5 +17,5 @@
     >
       <slot name="user-nav" />
     </div>
-  </div>
+  </a>
 </header>

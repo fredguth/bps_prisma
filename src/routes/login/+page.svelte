@@ -38,7 +38,10 @@
 					Use o login único do <b>gov.br</b>.
 				</p> -->
 			</div>
-			<Button href="/api/oauth/google">
+			<!-- <Button href="/api/oauth/google">
+				Use o login único <b>&nbsp;gov.br</b>
+			</Button> -->
+			<Button href="/material">
 				Use o login único <b>&nbsp;gov.br</b>
 			</Button>
 			<p class="px-8 text-center text-sm text-muted-foreground">

@@ -1,19 +1,18 @@
 <script lang="ts">
-	import MaterialTable from './material-table.svelte'
+	import MaterialTable from '$lib/components/material-table.svelte'
 	import * as Card from '$lib/components/ui/card'
 	import { Input } from '$lib/components/ui/input'
 	import { Button } from '$lib/components/ui/button'
-	import * as Table from '$lib/components/ui/table'
 	import Filter from '$lib/components/filter.svelte'
 	import type { MaterialState } from './types'
 	import { page } from '$app/stores'
 	import { goto } from '$app/navigation'
-	import {normalizeQuery} from '$lib/utils'
-	import { debounce, filterByQuery } from '$lib/utils'
-
+	import { normalizeQuery } from '$lib/utils'
+	import { debounce } from '$lib/utils'
 	export let data: MaterialState
 	let codigobr = data?.filters?.codigobr || ''
 	let descricao = data?.filters?.descricao || ''
+	let query = data?.filters?.query
 
 	$: materials = data?.materials
 	$: material = data?.materials[0]
@@ -21,6 +20,7 @@
 	$: classes = data?.classes
 	$: pdms = data?.pdms
 	$: totalRows = data?.totalRows || 0
+
 	$: selected = totalRows < 2 && materials[0]
 	$: if (selected) {
 		descricao = material.descricao
@@ -28,73 +28,65 @@
 	$: classe = data?.filters?.classe || ''
 	$: unidade = data?.filters?.unidade || ''
 	$: pdm = data?.filters?.pdm || ''
-	$: query = data?.filters?.query || ''
 	$: skip = data?.filters?.skip || 0
 	$: take = data?.filters?.take || 0
 
 	const handleClick = () => {
 		if (codigobr || descricao) {
+			query = ''
 			descricao = ''
 			codigobr = ''
+			handleChange({ detail: { query: '' } })
 			handleChange({ detail: { descricao: '' } })
 			handleChange({ detail: { codigobr: '' } })
 		}
 	}
 
 	const handleQuery = () => {
-		debounce(() => {
-			const url = $page.url
-			url.searchParams.delete('skip')
-			url.searchParams.delete('take')
-			url.searchParams.delete('query')
-			if (query.length > 3) {
-				const q = normalizeQuery(query)
-				url.searchParams.set('query', q)
+		const url = $page.url
+		const q = url.searchParams.get('q') || ''
+		debounce(async () => {
+			if (query.length > 3 || query.length < q.length) {
+				const url = $page.url
+				url.searchParams.delete('skip')
+				url.searchParams.delete('take')
+				url.searchParams.delete('query')
+				// url.searchParams.set('query', normalizeQuery(query))
+				url.searchParams.set('q', query)
+				goto(url, { replaceState: true, invalidateAll: true })
+				await goto(url, { replaceState: true, invalidateAll: true })
+				document.getElementById('queryInput')?.focus()
 			}
-			goto(url, { replaceState: true, invalidateAll: true })
-		}, 1000)()
+		}, 1500)()
 	}
 	const handleCodigo = () => {
 		// takes string codigo and turn into numbers only
-		codigobr = codigobr.replace(/\D/g, '')
-		if (codigobr) {
-			codigobr = codigobr.slice(0, 7)
-		}
+		codigobr = codigobr?.replace(/\D/g, '')
+		codigobr = codigobr?.slice(0, 7)
 
-		debounce(() => {
+		debounce(async () => {
 			const url = $page.url
 			url.searchParams.delete('codigobr')
 			if (codigobr.length > 0 && parseInt(codigobr)) {
 				// format codigobr to a 7 digit string with padding left zeros
 				const formated = 'BR' + codigobr.padStart(7, '0')
-				console.log(formated)
 				url.searchParams.set('codigobr', formated)
 			}
-			goto(url, { replaceState: true, invalidateAll: true })
-		}, 1000)()
+			await goto(url, { replaceState: true, invalidateAll: true })
+			document.getElementById('codigoInput')?.focus()
+		}, 1500)()
 	}
 	type withDetail = {
 		detail: Object
 	}
 	const handleChange = (event: withDetail) => {
-		console.log('handleChange', event.detail)
 		const [key, value] = Object.entries(event.detail)[0]
 		const url = $page.url
-		const isFilter = [
-			'classe',
-			'unidade',
-			'pdm',
-			'descricao',
-			'codigobr',
-		].includes(key)
-		if (isFilter) {
 			url.searchParams.delete('skip')
 			url.searchParams.delete('take')
+			url.searchParams.delete('q')
 			url.searchParams.delete(key)
 			if (value) url.searchParams.set(key, String(value))
-		} else url.searchParams.set(key, String(value))
-
-		console.log('go to:', url.searchParams.toString())
 		goto(url, { replaceState: true, invalidateAll: true })
 	}
 </script>
@@ -124,22 +116,22 @@
 				on:change={handleChange}
 			/>
 			<Input
+				id="codigoInput"
 				class="w-32 h-8  font-mono slashed-zero placeholder:font-sans"
 				bind:value={codigobr}
 				placeholder={codigobr ? codigobr : 'Código Material'}
 				on:input={handleCodigo}
 				on:click={handleClick}
+				autofocus
 			/>
 			<Input
+				id="queryInput"
 				class="w-full h-8"
-				value={descricao}
+				bind:value={query}
 				placeholder={descricao ? descricao : 'Descrição'}
-				on:click={() => {
-					descricao = ''
-					codigobr = ''
-					handleChange({ detail: { descricao: '' } })
-					handleChange({ detail: { codigobr: '' } })
-				}}
+				on:input={handleQuery}
+				on:click={handleClick}
+				autofocus
 			/>
 			<Filter
 				value={unidade}
@@ -153,9 +145,7 @@
 </Card.Root>
 
 {#if totalRows}
-
-<div class="max-h-[50vh] overflow-y-auto">
-
+	<div class="max-h-[50vh] overflow-y-auto">
 		<MaterialTable
 			table={materials}
 			{totalRows}
@@ -163,11 +153,10 @@
 			{take}
 			on:change={handleChange}
 		/>
-
-</div>
+	</div>
 {/if}
 {#if selected}
-<Button class="w-full mt-10" href= {`/material/${material.id}`}>
-	Consultar Preços
-</Button>
+	<Button class="w-full mt-10" href={`/material/${material.id}`}>
+		Consultar Preços
+	</Button>
 {/if}
