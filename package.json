@@ -10,7 +10,7 @@
 		"dev": "vite dev",
 		"preview": "vite preview",
 		"postinstall": "prisma generate",
-		"turso:local": "turso dev --db-file ./prisma/bps.lite.db --port 5555"
+		"turso:local": "turso dev --db-file ./prisma/turso.dev.db --port 5555"
 	},
 	"dependencies": {
 		"@libsql/client": "^0.4.0-pre.3",
@@ -23,7 +23,7 @@
 		"d3-format": "^3.1.0",
 		"d3-scale": "^4.0.2",
 		"layercake": "^8.0.2",
-		"libsql": "0.2.0-pre.3",
+		"libsql": "0.2.0-pre.2",
 		"svelte-headlessui": "^0.0.32"
 	},
 	"devDependencies": {

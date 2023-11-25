@@ -59,7 +59,7 @@
 	</article> -->
 	<slot />
 	{#if !selected}
-		<footer class:container={false} class="h-12 z-100">
+		<footer  class="h-12 z-100">
 			<aside>
 				{#if totalRows > 0}
 					Mostrando <span class="font-family:system-ui px-1 font-medium"
@@ -105,7 +105,7 @@
 		z-index: 1;
 	}
 
-	header,
+
 	footer {
 		min-height: 8px;
 		padding: 0 16px;
@@ -116,32 +116,10 @@
 		justify-content: space-between;
 		align-items: center;
 	}
-	header.container,
-	footer.container {
-		height: 48px;
-	}
+
 	footer {
 		border-top: 1px solid #e0e0e0;
 	}
 
-	article {
-		position: relative;
-		/* height:calc(100% - 96px); */
-		overflow: auto;
-		scrollbar-width: thin;
-	}
 
-	article::-webkit-scrollbar {
-		width: 6px;
-		height: 6px;
-	}
-	article::-webkit-scrollbar-track {
-		background: #f5f5f5;
-	}
-	article::-webkit-scrollbar-thumb {
-		background: #c2c2c2;
-	}
-	article::-webkit-scrollbar-thumb:hover {
-		background: #9e9e9e;
-	}
 </style>
