@@ -83,32 +83,31 @@ model Material {
 }
 
 model User {
-  id          String    @id @unique
-  cpf         String    @unique
-  email       String?   @unique
-  name        String?
-  phone       String?
-  key         Key[]
-  auth_ession Session[]
+  id            String         @id @unique
+  cpf           String         @unique
+  email         String?        @unique
+  name          String?
+  phone         String?
+  sessions      Session[]
+  oauthAccounts OauthAccount[]
 }
 
 model Session {
-  id             String @id @unique
-  user_id        String
-  active_expires BigInt
-  idle_expires   BigInt
-  user           User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  id        String   @id
+  userId    String
+  expiresAt DateTime
+  user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
 
-  @@index([user_id])
+  @@index([userId])
 }
 
-model Key {
-  id              String  @id @unique
-  hashed_password String?
-  user_id         String
-  user            User    @relation(fields: [user_id], references: [id], onDelete: Cascade)
+model OauthAccount {
+  providerId     String
+  providerUserId String
+  userId         String
+  user           User   @relation(references: [id], fields: [userId], onDelete: Cascade)
 
-  @@index([user_id])
+  @@id([providerId, providerUserId])
 }
 
 view ItensCompra {
