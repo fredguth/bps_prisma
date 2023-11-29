@@ -77,19 +77,21 @@
   }
 
   .gridline {
-    border-left: 1px dashed #aaa;
+    border-left: 1px dashed #666;
   }
 
   .tick-mark {
-    border-left: 1px solid #aaa;
+    border-left: 1px solid #666;
   }
   .baseline {
-    border-top: 1px solid #aaa;
+    border-top: 1px solid #666;
   }
 
   .tick .text {
     color: #666;
     position: relative;
+    font-family: monospace;
+    font-variant-numeric: normal;
     white-space: nowrap;
     transform: translateX(-50%);
   }
