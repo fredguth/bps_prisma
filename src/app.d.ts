@@ -6,13 +6,15 @@ declare global {
     }
   }
   namespace Lucia {
-    type Auth = import("$lib/server/lucia").Auth;
-    type DatabaseUserAttributes = {
-      name: string;
-      email: string;
-    };
-    type DatabaseSessionAttributes = {};
-  }
+		type Auth = import('$lib/server/lucia').Auth
+		type DatabaseUserAttributes = {
+			id: string
+			name: string
+			email: string
+			cpf: string
+		}
+		// type DatabaseSessionAttributes = {};
+	}
 
   var __prisma: import("@prisma/client").PrismaClient;
 }
