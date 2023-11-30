@@ -6,6 +6,7 @@
   import { Button } from "$lib/components/ui/button";
   import { filterByQuery, toTitleCase, runCommand, throttle } from "$lib/utils";
   import { createEventDispatcher } from 'svelte'
+  import { cn } from "$lib/utils";
 	const dispatch = createEventDispatcher()
 
   export let options: string[] = [];
@@ -13,6 +14,10 @@
   export let filterBy: string = '';
   export let value: string = "";
   export let query: string = "";
+
+  let className: string | undefined | null = undefined;
+  export { className as class };
+
   let open = false;
 
   $: variant = value ? "outline" : "";
@@ -25,7 +30,7 @@
 <Popover.Root bind:open>
   <Popover.Trigger>
     <!-- <Button {variant} size="sm" class="h-8 justify-left truncate"> -->
-      <Button {variant} class="h-8">
+      <Button {variant} class={cn("w-full", className)}>
       {#if value}
         <Check class="mr-2 h-4 w-4" />
         {value}

@@ -109,7 +109,7 @@
 	const resetFilters = async () => {
 		console.log('resetFilters')
 		const url = $page.url
-		skip = take = 0;
+		skip = take = 0
 		query = codigobr = descricao = classe = unidade = pdm = ''
 		url.searchParams.delete('skip')
 		url.searchParams.delete('take')
@@ -126,60 +126,68 @@
 	<Card.Header>
 		<div class="grid grid-cols-6 gap-4">
 			<div class="col-start-1 col-end-4">
-				<Card.Title tag="h2" class="pb-6 text-xl">Selecionar Material e Unidade</Card.Title>
+				<Card.Title tag="h2" class="pb-6 text-xl"
+					>Selecionar Material e Unidade</Card.Title
+				>
 				<Card.Description class="text-md"
-					>Escolha o material que quer comprar e a unidade de fornecimento desejada
-					para fazer pesquisa de preços.</Card.Description
+					>Escolha o material que quer comprar e a unidade de fornecimento
+					desejada para fazer pesquisa de preços.</Card.Description
 				>
 			</div>
-			<div class="col-start-6 col-end-7">
-				<Button variant = "outline" class="w-full" on:click={resetFilters}>
+			<div class="col-start-5 col-end-7 min-w-32">
+				<Button variant="outline" class="w-full" on:click={resetFilters}>
 					Limpar Filtros
-					</Button>
+				</Button>
 			</div>
-
-
-	</Card.Header>
-	<Card.Content>
-		<div class="flex items-start h-14 space-x-4 py-4">
-			<Filter
-				bind:value={classe}
-				title="Classe"
-				filterBy="classe"
-				options={classes}
-				on:change={handleChange}
-			/>
-			<Filter
-				bind:value={pdm}
-				title="Padrão"
-				filterBy="pdm"
-				options={pdms}
-				on:change={handleChange}
-			/>
-			<Input
-				id="codigoInput"
-				class="w-32 h-8  font-mono slashed-zero placeholder:font-sans"
-				bind:value={codigobr}
-				placeholder={codigobr ? codigobr : 'Código Material'}
-				on:input={handleCodigo}
-				on:click={handleClick}
-			/>
+		</div></Card.Header
+	>
+	<Card.Content class="flex flex-row space-x-2 my-3 relative">
+		<Filter
+			bind:value={classe}
+			title="Classe"
+			filterBy="classe"
+			options={classes}
+			on:change={handleChange}
+			class="hidden md:flex"
+		/>
+		<Filter
+			bind:value={pdm}
+			title="Padrão"
+			filterBy="pdm"
+			options={pdms}
+			class="hidden md:flex"
+			on:change={handleChange}
+		/>
+		<div class="relative">
+		<Input
+			id="codigoInput"
+			class="w-30 h-10  font-mono slashed-zero placeholder:font-sans"
+			bind:value={codigobr}
+			placeholder={codigobr ? codigobr : 'Código Material'}
+			on:input={handleCodigo}
+			on:click={handleClick}
+		/>
+		{#if (codigobr)}<Button variant="outline" class="z-100 absolute h-8 right-1 top-1 ">Buscar</Button>{/if}
+	</div>
+		<div class="relative w-full">
 			<Input
 				id="queryInput"
-				class="w-full h-8"
+				class="h-10"
 				bind:value={query}
 				placeholder={descricao ? descricao : 'Descrição'}
 				on:input={handleQuery}
 				on:click={handleClick}
 			/>
-			<Filter
-				bind:value={unidade}
-				title="Unidade"
-				filterBy="unidade"
-				options={unidades}
-				on:change={handleChange}
-			/>
+			{#if (query)}<Button variant="outline" class="z-100 absolute h-8 right-1 top-1 ">Buscar</Button>{/if}
 		</div>
+		<Filter
+			bind:value={unidade}
+			title="Unidade"
+			filterBy="unidade"
+			options={unidades}
+			on:change={handleChange}
+			class="hidden md:flex"
+		/>
 	</Card.Content>
 </Card.Root>
 
