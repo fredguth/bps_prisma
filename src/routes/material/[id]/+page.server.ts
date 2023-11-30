@@ -1,4 +1,5 @@
 import db from '$lib/server/prisma'
+import type { PrismaPromise } from '@prisma/client'
 import type { PageServerLoad } from '../$types'
 
 let id: string = ''
@@ -49,8 +50,8 @@ export const load = (async ({ params, url }) => {
 			data: 'desc',
 		},
 		skip,
-		take: 20,
+		take: 100,
 	})
 	// console.log({ itens, totalRows, material })
-	return { itens, material, totalRows, precos, take: 20 }
+	return { itens, material, totalRows, precos, take: 100 }
 }) satisfies PageServerLoad

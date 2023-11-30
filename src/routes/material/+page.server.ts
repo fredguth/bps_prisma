@@ -13,7 +13,7 @@ export const load = async ({ url }) => {
 	const classe = url.searchParams.get('classe')?.toUpperCase()
 	const codigobr = url.searchParams.get('codigobr')?.toUpperCase()
 	const descricao = url.searchParams.get('descricao')?.toUpperCase()
-	const limit = codigobr ? 1 : limitParam ? parseInt(limitParam) : 30 // Default limit
+	const limit = codigobr ? 1 : limitParam ? parseInt(limitParam) : 100 // Default limit
 	const skip = skipParam ? parseInt(skipParam) : 0 // Default skip
 
 	console.log({
