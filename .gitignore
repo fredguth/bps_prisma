@@ -10,8 +10,10 @@ vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 /prisma/*.d.db*
 /**/*/*.db*
+**/*.db
 *.bak
 /prisma/turso*
 /prisma/consolidado/*.parquet
 /prisma/consolidado/*.db
-/prisma/*db
+/prisma/*.*.db*
+*.db
