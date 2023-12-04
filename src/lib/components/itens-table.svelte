@@ -35,8 +35,11 @@
 		<thead class="sticky top-0 h-10 bg-slate-50 z-50">
 			<tr>
 				<th class="${ThStyle}">Data</th>
-				<th class="${ThStyle}">Anvisa</th>
-				<th class="${ThStyle}">Produto</th>
+				<th class="${ThStyle} w-72">Instituição</th>
+				<th class="${ThStyle} w-40">Município</th>
+				<th class="${ThStyle}">UF</th>
+				<th class="${ThStyle}">Modalidade</th>
+				<th class="${ThStyle}">Tipo</th>
 				<th class="${ThStyle} w-72">Fornecedor</th>
 				<th class="${ThStyle} w-72">Fabricante</th>
 				<th class="${ThStyle} text-right">Unidades</th>
@@ -53,15 +56,18 @@
 							dateStyle: 'short',
 						})}</td
 					>
-					<td class={TdStyle}>{row.anvisa || ''}</td>
-					<td class={TdStyle}>{row.produto || ''}</td>
+					<td class={TdStyle}>{row.instituicao || ''}</td>
+					<td class={TdStyle}>{row.municipio || ''}</td>
+					<td class={TdStyle}>{row.uf || ''}</td>
+					<td class={TdStyle}>{row.modalidade || ''}</td>
+					<td class={TdStyle}>{row.tipo || ''}</td>
 					<td class={TdStyle}>{row.fornecedor || ''}</td>
 					<td class={TdStyle}>{row.fabricante || ''}</td>
 					<td class={TdRightStyle}>{row.qtde.toLocaleString('pt-BR') || '0'}</td>
 					<td class={TdRightStyle}
-						>{row.valor_unitario?.toLocaleString('pt-BR', {
-							minimumFractionDigits: 2,
-							maximumFractionDigits: 2,
+						>{row.unitario?.toLocaleString('pt-BR', {
+							minimumFractionDigits: 4,
+							maximumFractionDigits: 4,
 						}) || ''}</td
 					>
 				</tr>
@@ -70,11 +76,14 @@
 
 		<tfoot class="sticky bottom-12 h-8 bg-slate-50 z-50">
 			<tr>
-				<th class="${ThStyle} ">Data</th>
-				<th class="${ThStyle} ">Anvisa</th>
-				<th class="${ThStyle} ">Produto</th>
+				<th class="${ThStyle}">Data</th>
+				<th class="${ThStyle} w-72">Instituição</th>
+				<th class="${ThStyle} w-40">Município</th>
+				<th class="${ThStyle}">UF</th>
+				<th class="${ThStyle}">Modalidade</th>
+				<th class="${ThStyle}">Tipo</th>
 				<th class="${ThStyle} w-72">Fornecedor</th>
-				<th class="${ThStyle} w-72t">Fabricante</th>
+				<th class="${ThStyle} w-72">Fabricante</th>
 				<th class="${ThStyle} text-right">Unidades</th>
 				<th class="${ThStyle} text-right">Valor Unitário</th>
 			</tr>

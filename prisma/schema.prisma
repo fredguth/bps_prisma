@@ -3,10 +3,10 @@ generator client {
   previewFeatures = ["views", "driverAdapters"]
 }
 
-generator docs {
-  provider = "node node_modules/prisma-docs-generator"
-  output   = "../docs"
-}
+// generator docs {
+//   provider = "node node_modules/prisma-docs-generator"
+//   output   = "../docs"
+// }
 
 datasource db {
   provider = "sqlite"
@@ -17,69 +17,71 @@ model Compra {
   id               Int      @id @unique @default(autoincrement())
   data             DateTime
   modalidade       String
-  judicial         Int      @default(dbgenerated("true"))
-  instituicao      String
+  tipo             String
   cnpj_instituicao String
-  uf               String
   Item             Item[]
+
+  @@index([data])
 }
 
-model Produto {
-  id              Int      @id @unique @default(autoincrement())
-  cnpj_fabricante String
-  nome            String
-  susbstancia     String
-  embalagem       String
-  codigobr        String
-  unidade         String
-  qtd_embalagem   Int
-  registro_anvisa String
-  material_id     Int
-  Item            Item[]
-  material        Material @relation(fields: [material_id], references: [id], onDelete: Cascade)
-  fabricante      PJ       @relation(fields: [cnpj_fabricante], references: [cnpj], onDelete: Cascade)
-}
+// model Produto {
+//   id              Int      @id @unique @default(autoincrement())
+//   cnpj_fabricante String
+//   nome            String
+//   susbstancia     String
+//   embalagem       String
+//   codigobr        String
+//   unidade         String
+//   qtd_embalagem   Int
+//   registro_anvisa String
+//   material_id     Int
+//   Item            Item[]
+//   material        Material @relation(fields: [material_id], references: [id], onDelete: Cascade)
+//   fabricante      PJ       @relation(fields: [cnpj_fabricante], references: [cnpj], onDelete: Cascade)
+// }
 
 model Item {
   id              Int      @id @default(autoincrement())
   compra_id       Int
-  codigobr        String
-  unidade         String
   anvisa          String?
   cnpj_fornecedor String
   cnpj_fabricante String
-  qtd_item        Int
-  valor_item      Float
+  qtde            BigInt
+  unitario        Float
+  licitacao       String?
+  NF              String?
   material_id     Int
-  produto_id      Int
-  produto         Produto  @relation(fields: [produto_id], references: [id], onDelete: Cascade)
+  //produto_id      Int
+  // produto         Produto  @relation(fields: [produto_id], references: [id], onDelete: Cascade)
   material        Material @relation(fields: [material_id], references: [id], onDelete: Cascade)
   fabricante      PJ       @relation("Fabricante", fields: [cnpj_fabricante], references: [cnpj], onDelete: Cascade)
   fornecedor      PJ       @relation("Fornecedor", fields: [cnpj_fornecedor], references: [cnpj], onDelete: Cascade)
   compra          Compra   @relation(fields: [compra_id], references: [id], onDelete: Cascade)
+
+  @@index([material_id])
 }
 
 model PJ {
-  cnpj            String    @id
+  cnpj            String  @id
   razao_social    String
-  ibge            String
-  municipio       String
-  uf              String
-  fabricanteItems Item[]    @relation("Fabricante")
-  fornecedorItems Item[]    @relation("Fornecedor")
-  Produto         Produto[]
+  // ibge            String?
+  municipio       String?
+  uf              String?
+  fabricanteItems Item[]  @relation("Fabricante")
+  fornecedorItems Item[]  @relation("Fornecedor")
+  // Produto         Produto[]
 }
 
 model Material {
-  id         Int       @id @unique @default(autoincrement())
+  id         Int    @id @unique @default(autoincrement())
   codigobr   String
   unidade    String
   classe     String
   pdm        String
   descricao  String
-  disponivel Int       @default(dbgenerated("true"))
+  disponivel Int    @default(dbgenerated("true"))
   Item       Item[]
-  Produto    Produto[]
+  // Produto    Produto[]
 }
 
 model User {
@@ -111,17 +113,24 @@ model OauthAccount {
 }
 
 view ItensCompra {
-  item_id         Int      @unique
-  compra_id       Int
-  data            DateTime
-  material_id     Int
-  produto_id      Int
-  anvisa          String?
-  produto         String?
-  cnpj_fornecedor String?
-  cnpj_fabricante String?
-  fabricante      String?
-  fornecedor      String?
-  qtde            Int
-  valor_unitario  Float
+  id               Int      @unique
+  data             DateTime
+  cnpj_instituicao String
+  instituicao      String?
+  municipio        String?
+  uf               String?
+  compra_id        Int
+  modalidade       String
+  tipo             String
+  licitacao        String?
+  materials_id     Int
+  cnpj_fornecedor  String?
+  fornecedor       String?
+  NF               String?
+  cnpj_fabricante  String?
+  fabricante       String?
+  anvisa           String?
+  material_id      Int
+  qtde             BigInt
+  unitario         Float
 }

@@ -1,6 +1,7 @@
 import db from '$lib/server/prisma'
 import type { PrismaPromise } from '@prisma/client'
 import type { PageServerLoad } from '../$types'
+import type { ItensCompra } from '@prisma/client'
 
 let id: string = ''
 export const load = (async ({ params, url }) => {
@@ -13,6 +14,7 @@ export const load = (async ({ params, url }) => {
 			id: parseInt(id),
 		},
 	})
+
 	const totalRows: PrismaPromise<number> = db.itensCompra.count({
 		where: {
 			material_id: parseInt(id),
@@ -22,26 +24,30 @@ export const load = (async ({ params, url }) => {
 	const precos = db.itensCompra
 		.findMany({
 			select: {
-				valor_unitario: true,
+				unitario: true,
 			},
 			where: {
 				material_id: parseInt(id),
 			},
 			orderBy: {
-				valor_unitario: 'desc',
+				unitario: 'desc',
 			},
 		})
-		.then((items) => items.map((item) => item.valor_unitario))
+		.then((items) => items.map((item) => item.unitario))
 
 	const itens = await db.itensCompra.findMany({
 		select: {
 			data: true,
-			anvisa: true,
-			produto: true,
-			fabricante: true,
+			instituicao: true,
+			municipio: true,
+			uf: true,
+			modalidade: true,
+			tipo: true,
 			fornecedor: true,
+			fabricante: true,
+			anvisa: true,
 			qtde: true,
-			valor_unitario: true,
+			unitario: true,
 		},
 		where: {
 			material_id: parseInt(id),
