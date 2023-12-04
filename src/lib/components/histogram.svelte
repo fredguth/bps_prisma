@@ -31,23 +31,24 @@
 	$: slimSteps = takeEvery(steps, 7)
 </script>
 
-<div class="input-container" style="position: absolute;right:200px;z-index: 9;">
-	<input
-		style="margin:0;"
-		type="range"
-		min="4"
-		max="200"
-		step="4"
-		bind:value={binCount}
-	/>
-	<span
-		class="counter-container"
-		style="display:inline-block;vertical-align:top;width: 120px;text-align:right;"
-		>{binCount} intervalos</span
-	>
-</div>
 
-<div class="chart-container">
+
+<div class="chart-container relative">
+	<div class="absolute z-10 right-0 w-32 mr-1">
+		<input
+			style="margin:0;"
+			type="range"
+			min="4"
+			max="200"
+			step="4"
+			bind:value={binCount}
+		/>
+		<span
+			class="counter-container"
+			style="display:inline-block;vertical-align:top;width: 120px;text-align:right;"
+			>{binCount} intervalos</span
+		>
+	</div>
 	<LayerCake
 		ssr={true}
 		percentRange={true}
