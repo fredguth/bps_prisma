@@ -17,3 +17,4 @@ vite.config.ts.timestamp-*
 /prisma/consolidado/*.db
 /prisma/*.*.db*
 *.db
+/prisma/bps.lite.db
