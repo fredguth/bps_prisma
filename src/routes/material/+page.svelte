@@ -122,7 +122,7 @@
 	}
 </script>
 
-<Card.Root class="w-full mb-10">
+<Card.Root class="w-full mb-5">
 	<Card.Header>
 		<div class="grid grid-cols-6 gap-4">
 			<div class="col-start-1 col-end-4">

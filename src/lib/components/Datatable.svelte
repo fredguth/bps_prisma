@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { min } from 'd3'
+
 	import type { DataHandler } from '@vincjo/datatables'
 	import Pagination from '$lib/components/pagination.svelte'
 	import { Input } from '$lib/components/ui/input'
@@ -24,6 +26,7 @@
 	$: pageNumber = (skip - (skip % take)) / take + 1 || 0
 	$: pageCount = (totalRows - (totalRows % take)) / take + 1 || 0
 	$: pagesShowing = getPagesShowing(pageNumber, pageCount)
+	$: showing = Math.min((skip + take), totalRows)
 
 	function getPagesShowing(pageNumber: number, pageCount: number) {
 		let min = Math.max(1, pageNumber - 4)
@@ -67,7 +70,7 @@
 					>
 					a
 					<span class="font-family:system-ui px-1 font-medium"
-						>{(skip + take).toLocaleString()}</span
+						>{showing.toLocaleString()}</span
 					>
 					de
 					<span class="font-family:system-ui px-1 font-medium"
