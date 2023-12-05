@@ -61,9 +61,11 @@
 	export let data: PageData
 	let openUF = false
 	let valueUF = ""; // Brasil
-
+	const lastDate = '2011-08-08'
 	$: material = data?.material
 	$: materials = [material]
+	// $: lastDate = new Date(data?.itens?.slice(-1)[0].data).toISOString().split('T')[0]
+	// $: console.log(lastDate)
 	$: rows = data?.itens
 	$: totalRows = data?.precos?.length || 0
 	// $: console.log({ precos: data?.precos })
@@ -236,7 +238,7 @@
 				</div>
 				<div class="col-start-2 col-end-3">
 					<span class="text-md font-semibold">Data Início:</span>
-					<Input type="date" class="w-[180px]" />
+					<Input type="date" class="w-[180px]"  value={lastDate}/>
 				</div>
 				<div class="col-start-4 col-end-7">
 					<span class="text-md font-semibold">Buscar:</span>

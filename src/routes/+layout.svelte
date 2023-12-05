@@ -11,12 +11,12 @@
 	$: classesActive = (href: string) =>
 		href === $page.url.pathname ? '!bg-primary-500' : ''
 	// $: console.log('layout', {data})
-	$: user = data?.user
+	$: pathname = data?.pathname
 </script>
 
 <div class="flex flex-col min-h-screen">
 	<Header>
-		<UserNav slot="user-nav" {user}></UserNav>
+		<UserNav slot="user-nav" {pathname}></UserNav>
 	</Header>
 	<main class="flex-grow mx-auto p-8 container">
 		{#key data.pathname}

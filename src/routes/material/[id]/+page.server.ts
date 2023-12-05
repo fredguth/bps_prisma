@@ -25,6 +25,7 @@ export const load = (async ({ params, url }) => {
 		.findMany({
 			select: {
 				unitario: true,
+				// data: true
 			},
 			where: {
 				material_id: parseInt(id),

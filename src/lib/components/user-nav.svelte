@@ -1,9 +1,9 @@
 <script>
     import * as Avatar from "$lib/components/ui/avatar"
-    export let user;
+    export let pathname;
 </script>
 
-{#if user}
+{#if (pathname!='/login')}
 <ul class="flex items-center space-x-10 h-12 justify-end text-blue-800 tabular-nums pr-2">
     <li>
         <a
