@@ -6,15 +6,16 @@
   import Footer from '$lib/components/footer.svelte';
   import UserNav from "$lib/components/user-nav.svelte";
 
-  // export let data;
+  export let data;
 
   $: classesActive = (href: string) =>
    href === $page.url.pathname ? "!bg-primary-500" : "";
-
+  // $: console.log('layout', {data})
+  $: user = data?.user
 </script>
 <div class="flex flex-col min-h-screen">
   <Header>
-    <UserNav slot="user-nav"></UserNav>
+    <UserNav slot="user-nav" {user} ></UserNav>
     </Header>
     <main class="flex-grow mx-auto p-8 container">
     <slot />

@@ -66,9 +66,9 @@
 	$: materials = [material]
 	$: rows = data?.itens
 	$: totalRows = data?.precos?.length || 0
-	$: console.log({ precos: data?.precos })
+	// $: console.log({ precos: data?.precos })
 	$: take = data?.take
-	$: console.log({valueUF, openUF})
+	// $: console.log({valueUF, openUF})
 
 	const handleChange = (event: CustomEvent) => {
 		let { skip } = event?.detail

@@ -20,10 +20,14 @@
 	let skip = data?.filters?.skip || 0
 	let take = data?.filters?.take || 0
 
+	let loading = false
+
 	$: materials = data?.materials
 	$: material = data?.materials[0]
 	$: unidades = data?.unidades
 	$: classes = data?.classes
+	$: inputBg = loading ? 'bg-gray' : ''
+	$: console.log(inputBg)
 	$: pdms = data?.pdms
 	$: totalRows = data?.totalRows || 0
 
@@ -32,6 +36,10 @@
 		descricao = material.descricao
 	}
 
+	const handleKeydown = (e) => {
+		// console.log({ e })
+		if (e.key == 'Enter') handleQuery()
+	}
 	const handleClick = () => {
 		if (codigobr || descricao) {
 			query = ''
@@ -44,25 +52,30 @@
 	}
 
 	const handleQuery = () => {
+		loading = true
 		const url = $page.url
 		url.searchParams.delete('q')
 		url.searchParams.delete('skip')
 		url.searchParams.delete('take')
 		url.searchParams.delete('codigobr')
-		debounce(async () => {
-			url.searchParams.set('q', query)
-			tick()
-				.then(() => goto(url, { replaceState: true, invalidateAll: true }))
-				.then(() => {
-					const el: HTMLInputElement = document?.getElementById(
-						'queryInput',
-					) as HTMLInputElement
-					if (el) {
-						el.focus()
-						el.setSelectionRange(query.length, query.length)
-					}
-				})
-		}, 200)()
+		// debounce(async () => {
+		url.searchParams.set('q', query)
+		tick()
+			.then(() => {
+				loading = true
+			})
+			.then(() => goto(url, { replaceState: true, invalidateAll: true }))
+			.then(() => {
+				loading = false
+				const el: HTMLInputElement = document?.getElementById(
+					'queryInput',
+				) as HTMLInputElement
+				if (el) {
+					el.focus()
+					el.setSelectionRange(query.length, query.length)
+				}
+			})
+		// }, 200)()
 	}
 	const handleCodigo = () => {
 		// takes string codigo and turn into numbers only
@@ -79,8 +92,12 @@
 				const formated = 'BR' + codigobr.padStart(7, '0')
 				url.searchParams.set('codigobr', formated)
 				tick()
+					.then(() => {
+						loading = true
+					})
 					.then(() => goto(url, { replaceState: true, invalidateAll: true }))
 					.then(() => {
+						loading = false
 						const el: HTMLInputElement = document?.getElementById(
 							'codigoInput',
 						) as HTMLInputElement
@@ -107,7 +124,7 @@
 	}
 
 	const resetFilters = async () => {
-		console.log('resetFilters')
+		// console.log('resetFilters')
 		const url = $page.url
 		skip = take = 0
 		query = codigobr = descricao = classe = unidade = pdm = ''
@@ -159,26 +176,34 @@
 			on:change={handleChange}
 		/>
 		<div class="relative">
-		<Input
-			id="codigoInput"
-			class="w-30 h-10  font-mono slashed-zero placeholder:font-sans"
-			bind:value={codigobr}
-			placeholder={codigobr ? codigobr : 'Código Material'}
-			on:input={handleCodigo}
-			on:click={handleClick}
-		/>
-		{#if (codigobr)}<Button variant="outline" class="z-100 absolute h-8 right-1 top-1 ">Buscar</Button>{/if}
-	</div>
+			<Input
+				id="codigoInput"
+				class="w-30 h-10  font-mono slashed-zero placeholder:font-sans disabled:text-gray-300 "
+				bind:value={codigobr}
+				bind:disabled={loading}
+				placeholder={codigobr ? codigobr : 'Código Material'}
+				on:input={handleCodigo}
+				on:click={handleClick}
+			/>
+			{#if codigobr}<Button
+					variant={!loading ? 'outline' : 'secondary'}
+					class="z-100 absolute h-8 right-1 top-1 ">Buscar</Button
+				>{/if}
+		</div>
 		<div class="relative w-full">
 			<Input
 				id="queryInput"
 				class="h-10"
 				bind:value={query}
+				on:keydown={handleKeydown}
 				placeholder={descricao ? descricao : 'Descrição'}
-				on:input={handleQuery}
 				on:click={handleClick}
 			/>
-			{#if (query)}<Button variant="outline" class="z-100 absolute h-8 right-1 top-1 ">Buscar</Button>{/if}
+			{#if query}<Button
+					variant={!loading ? 'outline' : 'secondary'}
+					class="z-100 absolute h-8 right-1 top-1 "
+					on:click={handleQuery}>Buscar</Button
+				>{/if}
 		</div>
 		<Filter
 			bind:value={unidade}

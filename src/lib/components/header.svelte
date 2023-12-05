@@ -5,7 +5,7 @@
 <header
   class="text-zinc-800 text-sm relative px-10 shadow-lg shadow-slate-100 h-20 p-4 w-full bg-white"
 >
-  <a href="/material" class="flex container">
+  <a href="/" class="flex container">
     <SVGImg data={logo} size={40} class="mx-4"/>
 
     <div>

@@ -25,7 +25,7 @@
 	// const domain = baseDomain
 
 	$: steps = calcThresholds(domain, binCount)
-	$: console.log({ steps })
+	// $: console.log({ steps })
 	$: hist = bin().domain(domain).thresholds(steps)
 
 	$: slimSteps = takeEvery(steps, 7)

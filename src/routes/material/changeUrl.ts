@@ -11,7 +11,7 @@ export async function changeUrl(
   query: string, // query by descricao
   materialSelected: boolean,
 ) {
-  console.log('changeUrl', c, u, cls, p, q)
+  // console.log('changeUrl', c, u, cls, p, q)
   if (!mounted) return null
   if (completed) return null
   const url = new URL(page.url)

@@ -19,7 +19,7 @@ export const GET: RequestHandler = async ({ cookies, locals }) => {
 	//   const code = generateCodeVerifier()
 	const authorizationUrl = await googleAuth.createAuthorizationURL(state)
 
-	console.log('api/oauth/google', { state, authorizationUrl })
+	// console.log('api/oauth/google', { state, authorizationUrl })
 	cookies.set('google_oauth_state', state, {
 		httpOnly: true,
 		secure: !dev,
