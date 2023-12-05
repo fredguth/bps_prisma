@@ -13,7 +13,7 @@ import { PrismaAdapter } from "@lucia-auth/adapter-prisma";
 
 const adapter = new PrismaAdapter(client.session, client.user);
 
-const urlbase = dev ? 'http://localhost:5173' : 'https://bps-prisma-fredguth.vercel.app'
+const urlbase = dev ? 'http://localhost:5173' : 'https://bps-prisma.vercel.app'
 const url = `${urlbase}/api/oauth/google/callback`
 
 export const googleAuth = new Google(

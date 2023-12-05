@@ -21,7 +21,6 @@ export const GET: RequestHandler = async ({ url, cookies, locals }) => {
 		})
 	}
 	try {
-		console.log('1')
 		const tokens = await googleAuth.validateAuthorizationCode(code)
 		console.log('api/oauth/google/callback', { tokens })
 		const googleUser = await googleAuth.getUser(tokens.accessToken)
