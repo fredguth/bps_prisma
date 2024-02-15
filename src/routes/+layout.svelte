@@ -4,7 +4,7 @@
 	import img from '$lib/assets/img-logo-MS.png'
 	import Header from '$lib/components/header.svelte'
 	import Footer from '$lib/components/footer.svelte'
-	import UserNav from '$lib/components/user-nav.svelte'
+	// import UserNav from '$lib/components/user-nav.svelte'
   import { fade } from 'svelte/transition';
 	export let data
 
@@ -16,7 +16,7 @@
 
 <div class="flex flex-col min-h-screen">
 	<Header>
-		<UserNav slot="user-nav" {pathname}></UserNav>
+		<!-- <UserNav slot="user-nav" {pathname}></UserNav> -->
 	</Header>
 	<main class="flex-grow mx-auto p-8 container">
 		{#key data.pathname}

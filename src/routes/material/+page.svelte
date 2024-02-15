@@ -36,10 +36,6 @@
 		descricao = material.descricao
 	}
 
-	const handleKeydown = (e) => {
-		// console.log({ e })
-		if (e.key == 'Enter') handleQuery()
-	}
 	const handleClick = () => {
 		if (codigobr || descricao) {
 			query = ''
@@ -79,6 +75,7 @@
 	}
 	const handleCodigo = () => {
 		// takes string codigo and turn into numbers only
+		loading = true
 		codigobr = codigobr?.replace(/\D/g, '')
 		codigobr = codigobr?.slice(0, 7)
 		if (codigobr.length > 0 && parseInt(codigobr)) {
@@ -182,12 +179,15 @@
 				bind:value={codigobr}
 				bind:disabled={loading}
 				placeholder={codigobr ? codigobr : 'Código Material'}
-				on:input={handleCodigo}
+				on:keydown={(e) =>{
+					if (e.key == 'Enter') handleCodigo()
+				}}
 				on:click={handleClick}
 			/>
 			{#if codigobr}<Button
 					variant={!loading ? 'outline' : 'secondary'}
-					class="z-100 absolute h-8 right-1 top-1 ">Buscar</Button
+					class="z-100 absolute h-8 right-1 top-1 "
+					on:click={handleCodigo}>Buscar</Button
 				>{/if}
 		</div>
 		<div class="relative w-full">
@@ -195,7 +195,9 @@
 				id="queryInput"
 				class="h-10"
 				bind:value={query}
-				on:keydown={handleKeydown}
+				on:keydown={(e) =>{
+					if (e.key == 'Enter') handleQuery()
+				}}
 				placeholder={descricao ? descricao : 'Descrição'}
 				on:click={handleClick}
 			/>

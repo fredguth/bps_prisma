@@ -1,4 +1,4 @@
-
+<!-- 
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import Button from '$lib/components/ui/button/button.svelte';
@@ -8,22 +8,22 @@
 
 	export let data: PageData;
 
-    $: user = data.user;
+    // $: user = data.user;
 	// $: if (browser && user) goto('/material');
 
     // $:console.log({data, user} )
 
-</script>
+</script> -->
 
-<h1> {user?.name}</h1>
-<div class="flex flex-col space-y-10">
-<form method="post" action="?/logout" use:enhance>
+<!-- <h1> {user?.name}</h1> -->
+<!-- <div class="flex flex-col space-y-10">  -->
+<!-- <form method="post" action="?/logout" use:enhance>
 	<Button type="submit" value="Sign out">
 		Deslogar
-		</Button>
-</form>
+		</Button> 
+</form> -->
 
-<Button href="/material">
+<!-- <Button href="/material">
 	Consulta
 	</Button>
-</div>
+</div> -->
